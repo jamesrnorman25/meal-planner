@@ -1,3 +1,4 @@
+"""URL configuration for meal planner"""
 from django.urls import path
 from . import views
 
