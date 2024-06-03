@@ -1,22 +1,5 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Welcome</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-</head>
+{% extends "header.html" %}
 
-<body>
-    <nav>
-        <div class="nav-wrapper">
-          <a href="#" class="brand-logo">Logo</a>
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="/Home">Home</a></li>
-            <li style="padding-right: 5px; padding-bottom: 5px"><button class="waves-effect waves-light btn" href="/Sign_up">Sign up</button></li>
-            <li style="padding-right: 5px; padding-bottom: 5px"><button class="waves-effect waves-light btn" href="/Login">Login</button></li>
-          </ul>
-        </div>
-      </nav>
+{% block content %}
     <h1>Welcome to my humble site.</h1>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-</body>
+{% endblock %}

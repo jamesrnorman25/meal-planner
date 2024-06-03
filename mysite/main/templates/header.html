@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Welcome</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+</head>
+
+<body>
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a href="#!">My account</a></li>
+    <li><a href="#!">My recipes</a></li>
+    <li class="divider"></li>
+    <li><a href="/logout">Logout</a></li>
+  </ul>
+    <nav>
+        <div class="nav-wrapper">
+          <a href="" class="brand-logo">Logo</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/Home">Home</a></li>
+            {% if user.is_authenticated %}
+             <li><a href="/browse-recipes">Browse recipes</a></li>
+             <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">{{user.username|title}}</a></li>
+            {% else %}
+                <li><a href="/Login">Login</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+        {% block content %}
+        {% endblock %}
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    </body>
+    

@@ -1,0 +1,9 @@
+{% extends "header.html" %}
+
+{% block content %}
+<h1 align="center">All Recipes</h1>
+    {% for recipe in recipes %}
+        <h2>{{recipe.recipe_name}}</h2>
+        <p>Time: {{recipe.recipe_prep_time}} {{recipe.recipe_prep_time_unit}}</p>
+    {% endfor %}
+{% endblock %}
