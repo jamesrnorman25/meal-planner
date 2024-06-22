@@ -5,6 +5,7 @@ from .models import Recipe, Ingredient
 
 
 class RecipeAdmin(admin.ModelAdmin):
+    """Admin for recipe model."""
     fields = ["recipe_name",
               "recipe_prep_time",
               "recipe_prep_time_unit"]
@@ -12,6 +13,7 @@ class RecipeAdmin(admin.ModelAdmin):
     
 
 class IngredientAdmin(admin.ModelAdmin):
+    """Admin for ingredient model."""
     fields = ["ingredient_name",
               "ingredient_min_buying_size",
               "ingredient_count_unit"]
