@@ -19,6 +19,9 @@ class Ingredient(models.Model):
     ingredient_count_unit = models.CharField(max_length=10, choices=INGREDIENT_UNIT)
     ingredient_min_buying_size = models.IntegerField()
 
+    def __str__(self) -> str:
+        return self.ingredient_name
+
 class Recipe(models.Model):
     """Recipe record in the database. Includes name and prep time with units."""
     TIME_UNIT = {
@@ -28,5 +31,15 @@ class Recipe(models.Model):
     recipe_name = models.CharField(max_length=300)
     recipe_prep_time = models.IntegerField()
     recipe_prep_time_unit = models.CharField(max_length=20, choices=TIME_UNIT)
-    recipe_ingredients = models.ManyToManyField(Ingredient)
+    recipe_ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient")
+    
+    def __str__(self):
+        return self.recipe_name
 
+class RecipeIngredient(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    ingredient_amount = models.IntegerField()
+
+    def __str__(self) -> str:
+        return f"{self.recipe.recipe_name} - {self.ingredient.ingredient_name}"
