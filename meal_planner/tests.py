@@ -1,3 +1,15 @@
-from django.test import TestCase
+"""This is a collection of unit tests for the meal_planner app.
+    :author: jamesrnorman25
+"""
 
-# Create your tests here.
+from django.test import TestCase
+from django.http import HttpRequest
+from meal_planner.views import homepage
+
+class HomepageTest(TestCase):
+
+    def test_homepage_is_correct_2(self) -> None:
+        response = self.client.get('/')
+        self.assertContains(response, "<title>Home</title>")
+        self.assertContains(response, "<html>")
+        self.assertContains(response, "</html>")
