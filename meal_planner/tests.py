@@ -3,8 +3,6 @@
 """
 
 from django.test import TestCase
-from django.http import HttpRequest
-from meal_planner.views import homepage
 
 class HomepageTest(TestCase):
 
