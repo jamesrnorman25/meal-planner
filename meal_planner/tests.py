@@ -6,8 +6,6 @@ from django.test import TestCase
 
 class HomepageTest(TestCase):
 
-    def test_homepage_is_correct_2(self) -> None:
+    def test_homepage_template_used(self) -> None:
         response = self.client.get('/')
-        self.assertContains(response, "<title>Home</title>")
-        self.assertContains(response, "<html>")
-        self.assertContains(response, "</html>")
+        self.assertTemplateUsed(response, "home.html")
