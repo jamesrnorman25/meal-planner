@@ -13,7 +13,7 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.close()
 
     def test_can_create_account(self) -> None:
-        """Runs through the process of a user seeing the product and """
+        """Runs through the process of a user seeing the product and signing up."""
         # David has heard about a meal planning app.
         # He goes online to the meal planner's homepage.
         self.browser.get("http://localhost:8000")
@@ -24,11 +24,11 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn("Welcome", header_text)
 
         # He invited to create an account.
-        create_account_button = self.browser.find_element_by_id("id_create_account_button")
-        self.assertEqual("Create Account", create_account_button.text)
+        create_account_link = self.browser.find_element_by_id("id_link_create_account")
+        self.assertEqual("Create Account", create_account_link.text)
 
-        # Intrigued, David clicks on the button and is directed to the account creation page.
-        create_account_button.click()
+        # Intrigued, David clicks on the link and is directed to the account creation page.
+        create_account_link.click()
         time.sleep(1)
         self.assertIn("Create Account", self.browser.title)
 
