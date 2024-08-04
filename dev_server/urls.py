@@ -20,4 +20,5 @@ from meal_planner import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homepage),
+    path('Create-Account', views.create_account),
 ]
