@@ -32,10 +32,18 @@ class NewVisitorTest(unittest.TestCase):
         time.sleep(1)
         self.assertIn("Create Account", self.browser.title)
 
-        # He types his name (David) into the Username box and pasword123 into the password box (David doesn't understand cybersecurity).
-        self.fail("TODO: Finish the test!")
+        # He types his name (David) into the Username box and password123 into the password box (David doesn't understand cybersecurity)
+        # before pressing Enter.
+        username_box = self.browser.find_element_by_id("id_username")
+        password_box = self.browser.find_element_by_id("id_password1")
+        password_confirmation_box = self.browser.find_element_by_id("id_password2")
+        username_box.send_keys("David")
+        password_box.send_keys("password123")
+        password_confirmation_box.send_keys("password123")
 
         # When he hits enter, he logs in and is redirected to his dashboard.
+        password_confirmation_box.send_keys(Keys.ENTER)
+        self.fail("TODO: Finish the test!")
 
 if __name__ == "__main__":
     unittest.main()

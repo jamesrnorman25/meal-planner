@@ -3,6 +3,12 @@
         <title>Create Account</title>
     </head>
     <body>
-        
+        <form method="POST">
+            {{ form }}
+            {% if error %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endif %}
+            {% csrf_token %}
+        </form>
     </body>
 </html>
