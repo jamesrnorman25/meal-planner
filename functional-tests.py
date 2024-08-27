@@ -43,7 +43,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # When he hits enter, he logs in and is redirected to his dashboard.
         password_confirmation_box.send_keys(Keys.ENTER)
-        self.fail("TODO: Finish the test!")
+        self.assertIn("Dashboard", self.browser.title)
 
 if __name__ == "__main__":
     unittest.main()
