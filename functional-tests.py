@@ -6,11 +6,13 @@ import time
 
 
 class NewVisitorTest(unittest.TestCase):
+    username = "David"
     def setUp(self) -> None:
         self.browser = webdriver.Firefox()
 
     def tearDown(self) -> None:
         self.browser.close()
+        
 
     def test_can_create_account(self) -> None:
         """Runs through the process of a user seeing the product and signing up."""
@@ -37,7 +39,7 @@ class NewVisitorTest(unittest.TestCase):
         username_box = self.browser.find_element(By.ID, "id_username")
         password_box = self.browser.find_element(By.ID, "id_password1")
         password_confirmation_box = self.browser.find_element(By.ID, "id_password2")
-        username_box.send_keys("David")
+        username_box.send_keys(self.username)
         password_box.send_keys("password123")
         password_confirmation_box.send_keys("password123")
 
