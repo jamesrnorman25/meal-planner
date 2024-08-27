@@ -1,6 +1,6 @@
 import unittest
 from selenium import webdriver
-from selenium.webdriver.common import by
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 
@@ -20,11 +20,11 @@ class NewVisitorTest(unittest.TestCase):
         # He notices that "Home" is in the browser title and the page is welcoming.
         assert "Home" in self.browser.title
         self.assertIn("Home", self.browser.title)
-        header_text = self.browser.find_element_by_tag_name("h1").text
+        header_text = self.browser.find_element(By.TAG_NAME, "h1").text
         self.assertIn("Welcome", header_text)
 
         # He invited to create an account.
-        create_account_link = self.browser.find_element_by_id("id_link_create_account")
+        create_account_link = self.browser.find_element(By.ID, "id_link_create_account")
         self.assertEqual("Create Account", create_account_link.text)
 
         # Intrigued, David clicks on the link and is directed to the account creation page.
@@ -34,9 +34,9 @@ class NewVisitorTest(unittest.TestCase):
 
         # He types his name (David) into the Username box and password123 into the password box (David doesn't understand cybersecurity)
         # before pressing Enter.
-        username_box = self.browser.find_element_by_id("id_username")
-        password_box = self.browser.find_element_by_id("id_password1")
-        password_confirmation_box = self.browser.find_element_by_id("id_password2")
+        username_box = self.browser.find_element(By.ID, "id_username")
+        password_box = self.browser.find_element(By.ID, "id_password1")
+        password_confirmation_box = self.browser.find_element(By.ID, "id_password2")
         username_box.send_keys("David")
         password_box.send_keys("password123")
         password_confirmation_box.send_keys("password123")
