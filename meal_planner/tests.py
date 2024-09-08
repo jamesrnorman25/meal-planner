@@ -46,3 +46,6 @@ class DashboardPostTest(TestCase):
 
     def test_can_get_page(self) -> None:
         self.assertEqual(self.response.status_code, 200)
+
+    def test_uses_dashboard_template(self) -> None:
+        self.assertTemplateUsed(self.response, "dashboard.html")

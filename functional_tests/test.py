@@ -46,6 +46,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         # When he hits enter, he logs in and is redirected to his dashboard.
         password_confirmation_box.send_keys(Keys.ENTER)
+        time.sleep(1)
         self.assertIn("Dashboard", self.browser.title)
 
 if __name__ == "__main__":

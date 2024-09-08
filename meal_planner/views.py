@@ -18,4 +18,4 @@ def homepage(request):
     return render(request, "home.html")
 
 def dashboard(request):
-    return HttpResponse("This is the dashboard.")
+    return render(request, "dashboard.html")
