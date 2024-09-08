@@ -47,7 +47,20 @@ class NewVisitorTest(LiveServerTestCase):
         # When he hits enter, he logs in and is redirected to his dashboard.
         password_confirmation_box.send_keys(Keys.ENTER)
         time.sleep(1)
-        self.assertIn("Dashboard", self.browser.title)
+        self.assertIn("Dashboard - David", self.browser.title)
+
+# class VisitorLoginTest(LiveServerTestCase):
+#     username = "David"
+#     password = "password123"
+
+#     def setUp(self) -> None:
+        
+#         self.browser = webdriver.Firefox()
+
+    
+#     def tearDown(self) -> None:
+#         self.browser.close()
+        
 
 if __name__ == "__main__":
     unittest.main()

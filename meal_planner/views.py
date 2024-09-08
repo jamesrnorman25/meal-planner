@@ -18,4 +18,4 @@ def homepage(request):
     return render(request, "home.html")
 
 def dashboard(request):
-    return render(request, "dashboard.html")
+    return render(request, "dashboard.html", context={"username": request.user.username})
