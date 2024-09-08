@@ -1,11 +1,12 @@
 import unittest
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     username = "David"
     def setUp(self) -> None:
         self.browser = webdriver.Firefox()
@@ -18,7 +19,7 @@ class NewVisitorTest(unittest.TestCase):
         """Runs through the process of a user seeing the product and signing up."""
         # David has heard about a meal planning app.
         # He goes online to the meal planner's homepage.
-        self.browser.get("http://localhost:8000")
+        self.browser.get(self.live_server_url)
         # He notices that "Home" is in the browser title and the page is welcoming.
         assert "Home" in self.browser.title
         self.assertIn("Home", self.browser.title)
