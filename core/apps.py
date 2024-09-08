@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MealPlannerConfig(AppConfig):
+class CoreConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'meal_planner'
+    name = 'core'
