@@ -34,14 +34,14 @@ class NewVisitorTest(unittest.TestCase):
         time.sleep(1)
         self.assertIn("Create Account", self.browser.title)
 
-        # He types his name (David) into the Username box and password123 into the password box (David doesn't understand cybersecurity)
+        # He types his name (David) into the Username box and i@N7bR4ASnL0q$ into the password box (David has a very good memory and really understands cybersecurity)
         # before pressing Enter.
         username_box = self.browser.find_element(By.ID, "id_username")
         password_box = self.browser.find_element(By.ID, "id_password1")
         password_confirmation_box = self.browser.find_element(By.ID, "id_password2")
         username_box.send_keys(self.username)
-        password_box.send_keys("password123")
-        password_confirmation_box.send_keys("password123")
+        password_box.send_keys("i@N7bR4ASnL0q$")
+        password_confirmation_box.send_keys("i@N7bR4ASnL0q$")
 
         # When he hits enter, he logs in and is redirected to his dashboard.
         password_confirmation_box.send_keys(Keys.ENTER)
