@@ -75,3 +75,19 @@ class LoginValidPostTest(TestCase):
         user = get_user(self.client)
         self.assertEqual(user.username, self.username)
         self.assertTrue(user.is_authenticated)
+
+class LogoutTest(TestCase):
+    username = "test"
+    password = "password123"
+    def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user=user)
+        self.response = self.client.get("/Logout")
+
+    def test_logs_user_out(self) -> None:
+        user = get_user(self.client)
+        self.assertFalse(user.is_authenticated)
+
+    def test_redirects_to_homepage(self) -> None:
+        self.assertRedirects(self.response, "/")

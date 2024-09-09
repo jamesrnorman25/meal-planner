@@ -50,6 +50,13 @@ class NewVisitorTest(LiveServerTestCase):
         time.sleep(3)
         self.assertIn(f"Dashboard - {self.username}", self.browser.title)
 
+        # Satisfied, he clicks on the log out button and is redirected back to the homepage.
+        logout_button = self.browser. find_element(By.ID, "id_link_logout")
+        logout_button.click()
+        time.sleep(3)
+        self.assertIn("Home", self.browser.title)
+
+
 class ExistingUserLoginTest(LiveServerTestCase):
     username = "David"
     password = "password123"
