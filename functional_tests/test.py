@@ -1,4 +1,5 @@
 import unittest
+from django.contrib.auth.models import User
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -8,6 +9,7 @@ import time
 
 class NewVisitorTest(LiveServerTestCase):
     username = "David"
+    password = "i@N7bR4ASnL0q$"
     def setUp(self) -> None:
         self.browser = webdriver.Firefox()
 
@@ -21,7 +23,6 @@ class NewVisitorTest(LiveServerTestCase):
         # He goes online to the meal planner's homepage.
         self.browser.get(self.live_server_url)
         # He notices that "Home" is in the browser title and the page is welcoming.
-        assert "Home" in self.browser.title
         self.assertIn("Home", self.browser.title)
         header_text = self.browser.find_element(By.TAG_NAME, "h1").text
         self.assertIn("Welcome", header_text)
@@ -41,25 +42,46 @@ class NewVisitorTest(LiveServerTestCase):
         password_box = self.browser.find_element(By.ID, "id_password1")
         password_confirmation_box = self.browser.find_element(By.ID, "id_password2")
         username_box.send_keys(self.username)
-        password_box.send_keys("i@N7bR4ASnL0q$")
-        password_confirmation_box.send_keys("i@N7bR4ASnL0q$")
+        password_box.send_keys(self.password)
+        password_confirmation_box.send_keys(self.password)
 
         # When he hits enter, he logs in and is redirected to his dashboard.
         password_confirmation_box.send_keys(Keys.ENTER)
-        time.sleep(1)
-        self.assertIn("Dashboard - David", self.browser.title)
+        time.sleep(3)
+        self.assertIn(f"Dashboard - {self.username}", self.browser.title)
 
-# class VisitorLoginTest(LiveServerTestCase):
-#     username = "David"
-#     password = "password123"
+class VisitorLoginTest(LiveServerTestCase):
+    username = "David"
+    password = "password123"
 
-#     def setUp(self) -> None:
-        
-#         self.browser = webdriver.Firefox()
+    def setUp(self) -> None:
+        User.objects.create_user(username=self.username, password=self.password)
+        self.browser = webdriver.Firefox()
 
     
-#     def tearDown(self) -> None:
-#         self.browser.close()
+    def tearDown(self) -> None:
+        self.browser.close()
+        User.objects.filter(username=self.username).delete()
+
+    def test_user_can_log_in(self) -> None:
+        # After a while, David wants to return to the website.
+        self.browser.get(self.live_server_url)
+        # He clicks on the log in link in the navbar and is directed to the login page.
+        login_link = self.browser.find_element(By.ID, "id_login_link")
+        login_link.click()
+        time.sleep(1)
+        self.assertIn("Login", self.browser.title)
+        
+        # David types his username and password into the required boxes and hits Enter
+        username_box = self.browser.find_element(By.ID, "id_username")
+        password_box = self.browser.find_element(By.ID, "id_password")
+        username_box.send_keys(self.username)
+        password_box.send_keys(self.password)
+        password_box.send_keys(Keys.ENTER)
+        time.sleep(1)
+
+        # As before, he is redirected to his dashboard.
+        self.assertIn(f"Dashboard - {self.username}", self.browser.title)
         
 
 if __name__ == "__main__":
