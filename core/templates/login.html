@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+        <form method="POST">
+            {{ form }}
+            {% if error %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endif %}
+            {% csrf_token %}
+            <button id="id_submit" type="submit">Submit</button>
+        </form>
+{% endblock content %}

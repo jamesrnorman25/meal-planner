@@ -1,0 +1,17 @@
+<html>
+    <head><title>{% block title %}Title of page{% endblock title %}</title></head>
+
+    <body>
+        <nav>
+            {% if user.is_authenticated %}
+            <a id="id_link_dashboard" href="/Dashboard">My Dashboard</a>
+            <a id="id_link_logout" href="/Logout">Log out</a>
+            {% else %}
+            <a id="id_link_login" href="/Login">Login</a>
+            {% endif %}
+        </nav>
+        {% block content %}
+        New content
+        {% endblock content %}
+    </body>
+</html>
