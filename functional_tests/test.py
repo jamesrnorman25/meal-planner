@@ -55,7 +55,8 @@ class ExistingUserLoginTest(LiveServerTestCase):
     password = "password123"
 
     def setUp(self) -> None:
-        User.objects.create_user(username=self.username, password=self.password)
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
         self.browser = webdriver.Firefox()
 
     
@@ -78,7 +79,7 @@ class ExistingUserLoginTest(LiveServerTestCase):
         username_box.send_keys(self.username)
         password_box.send_keys(self.password)
         password_box.send_keys(Keys.ENTER)
-        time.sleep(1)
+        time.sleep(3)
 
         # As before, he is redirected to his dashboard.
         self.assertIn(f"Dashboard - {self.username}", self.browser.title)

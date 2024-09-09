@@ -59,3 +59,19 @@ class LoginGetTest(TestCase):
     
     def test_uses_login_template(self) -> None:
         self.assertTemplateUsed(self.response, "login.html")
+
+class LoginValidPostTest(TestCase):
+    username = "test"
+    password = "password123"
+    def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.response = self.client.post("/Login", data={"username": self.username, "password": self.password})
+
+    def test_redirects_to_dashboard(self) -> None:
+        self.assertRedirects(self.response, "/Dashboard")
+
+    def test_logs_user_in(self) -> None:
+        user = get_user(self.client)
+        self.assertEqual(user.username, self.username)
+        self.assertTrue(user.is_authenticated)
