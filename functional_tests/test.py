@@ -50,7 +50,7 @@ class NewVisitorTest(LiveServerTestCase):
         time.sleep(3)
         self.assertIn(f"Dashboard - {self.username}", self.browser.title)
 
-class VisitorLoginTest(LiveServerTestCase):
+class ExistingUserLoginTest(LiveServerTestCase):
     username = "David"
     password = "password123"
 
@@ -67,7 +67,7 @@ class VisitorLoginTest(LiveServerTestCase):
         # After a while, David wants to return to the website.
         self.browser.get(self.live_server_url)
         # He clicks on the log in link in the navbar and is directed to the login page.
-        login_link = self.browser.find_element(By.ID, "id_login_link")
+        login_link = self.browser.find_element(By.ID, "id_link_login")
         login_link.click()
         time.sleep(1)
         self.assertIn("Login", self.browser.title)

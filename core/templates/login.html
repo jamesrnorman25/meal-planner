@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>Login</title>
+    </head>
+    <body>
+        <form method="POST">
+            {{ form }}
+            {% if error %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endif %}
+            {% csrf_token %}
+            <button id="id_submit" type="submit">Submit</button>
+        </form>
+    </body>
+</html>

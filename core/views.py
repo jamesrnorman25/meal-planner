@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login
 
 def create_account(request):
@@ -19,3 +19,10 @@ def homepage(request):
 
 def dashboard(request):
     return render(request, "dashboard.html", context={"username": request.user.username})
+
+def login_view(request):
+    if request.method == "POST":
+        pass
+    else:
+        form = AuthenticationForm
+        return render(request, "login.html", context={"form": form})
