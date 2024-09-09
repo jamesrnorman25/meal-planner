@@ -1,0 +1,12 @@
+<html>
+    <head><title>{% block title %}Title of page{% endblock title %}</title></head>
+
+    <body>
+        <nav>
+            <a id="id_link_login" href="/Login">Login</a>
+        </nav>
+        {% block content %}
+        New content
+        {% endblock content %}
+    </body>
+</html>

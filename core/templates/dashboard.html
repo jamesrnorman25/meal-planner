@@ -1,10 +1,9 @@
-<html>
-    <head><title>Dashboard - {{ username }}</title></head>
+{% extends "base.html" %}
+{% block title %} Dashboard - {{ username }} {% endblock title %}
 
-    <body>
+ {% block content %}
         <h1>
             Welcome
         </h1>
         <a id="id_link_create_account" href="/Create-Account">Create Account</a>
-    </body>
-</html>
+{% endblock content %}

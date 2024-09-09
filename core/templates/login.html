@@ -1,8 +1,7 @@
-<html>
-    <head>
-        <title>Login</title>
-    </head>
-    <body>
+{% extends "base.html" %}
+{% block title %} Login {% endblock title %}
+
+{% block content %}
         <form method="POST">
             {{ form }}
             {% if error %}
@@ -11,5 +10,4 @@
             {% csrf_token %}
             <button id="id_submit" type="submit">Submit</button>
         </form>
-    </body>
-</html>
+{% endblock content %}

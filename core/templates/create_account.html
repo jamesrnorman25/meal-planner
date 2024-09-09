@@ -1,8 +1,8 @@
-<html>
-    <head>
-        <title>Create Account</title>
-    </head>
-    <body>
+{% extends "base.html" %}
+
+{% block title %} Create Account {% endblock title %}
+
+{% block content %}
         <form method="POST">
             {{ form }}
             {% if error %}
@@ -11,5 +11,4 @@
             {% csrf_token %}
             <button id="id_submit" type="submit">Create Account</button>
         </form>
-    </body>
-</html>
+{% endblock content %}
