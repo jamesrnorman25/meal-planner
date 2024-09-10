@@ -164,3 +164,4 @@ cython_debug/
 # VSCode
 # Vscode uses its own datafile to manage workspaces.
 *.code-workspace
+.vscode/
