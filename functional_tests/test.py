@@ -92,5 +92,40 @@ class ExistingUserLoginTest(LiveServerTestCase):
         self.assertIn(f"Dashboard - {self.username}", self.browser.title)
         
 
+class NewMealplanTest(LiveServerTestCase):
+    username = "David"
+    password = "password123"
+
+    def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user=user)
+        cookie = self.client.cookies["sessionid"]
+        self.browser = webdriver.Firefox()
+        self.browser.get(self.live_server_url)
+        self.browser.add_cookie({"name": "sessionid", "value": cookie.value, "secure": False, "path": '/'})
+        self.browser.refresh()
+
+
+    
+    def tearDown(self) -> None:
+        self.browser.close()
+        User.objects.filter(username=self.username).delete()
+
+    def test_user_can_create_mealplans(self) -> None:
+        # David logs in and goes to his dashboard.
+        self.browser.get(f"{self.live_server_url}/Dashboard")
+        self.assertIn(self.username, self.browser.title)
+
+        # He clicks on the button to add a new weekly mealplan.
+        mealplan_button = self.browser.find_element(By.ID, "id_add_button")
+        mealplan_button.click()
+        time.sleep(3)
+
+        # He is directed to a mealplan creation page.
+        self.assertEqual("New meal plan", self.browser.title)
+        self.fail("Finish the test!")
+
+
 if __name__ == "__main__":
     unittest.main()
