@@ -7,6 +7,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user
 from django.contrib.auth.models import User
 
+
 class HomepageTest(TestCase):
 
     def test_homepage_template_used(self) -> None:
@@ -50,6 +51,7 @@ class DashboardPostTest(TestCase):
     def test_uses_dashboard_template(self) -> None:
         self.assertTemplateUsed(self.response, "dashboard.html")
 
+
 class LoginGetTest(TestCase):
     def setUp(self) -> None:
         self.response = self.client.get("/Login")
@@ -59,6 +61,7 @@ class LoginGetTest(TestCase):
     
     def test_uses_login_template(self) -> None:
         self.assertTemplateUsed(self.response, "login.html")
+
 
 class LoginValidPostTest(TestCase):
     username = "test"
@@ -75,6 +78,7 @@ class LoginValidPostTest(TestCase):
         user = get_user(self.client)
         self.assertEqual(user.username, self.username)
         self.assertTrue(user.is_authenticated)
+
 
 class LogoutTest(TestCase):
     username = "test"
