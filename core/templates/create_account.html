@@ -3,12 +3,23 @@
 {% block title %} Create Account {% endblock title %}
 
 {% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 text-center">
+        <br><h1>Create Account</h1><br>
         <form method="POST">
-            {{ form }}
+            {{form.username.label}}<br>
+            {{ form.username }}<br>
+            {{form.password1.label}}<br>
+            {{form.password1}}<br>
+            {{form.password2.label}}<br>
+            {{form.password2}}<br><br>
             {% if error %}
-                <div class="invalid-feedback">{{ error }}</div>
+                <div class="invalid-feedback">{{ error }}</div><br>
             {% endif %}
             {% csrf_token %}
             <button id="id_submit" type="submit">Create Account</button>
         </form>
+        <p>Already got an account? <a href="/Login">Log in</a></p>
+    </div>
+</div>
 {% endblock content %}

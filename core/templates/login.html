@@ -2,12 +2,18 @@
 {% block title %} Login {% endblock title %}
 
 {% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 text-center">
+        <br><h1 class="header">Log In</h1><br>
         <form method="POST">
-            {{ form }}
+            {{ form.as_p }}
             {% if error %}
                 <div class="invalid-feedback">{{ error }}</div>
             {% endif %}
             {% csrf_token %}
             <button id="id_submit" type="submit">Submit</button>
         </form>
+        <p>No account? <a href="/Create-Account">Register</a></p>
+    </div>
+</div>
 {% endblock content %}
