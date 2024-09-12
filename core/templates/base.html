@@ -1,17 +1,27 @@
 <!DOCTYPE html>
-<html>
-    <meta charset="utf-8">
-    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <head><title>{% block title %}Title of page{% endblock title %}</title></head>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/bootstrap-5.3/css/bootstrap.css">
+        <script src="/static/bootstrap-5.3/js/bootstraps.js"></script>
+        <title>{% block title %}Title of page{% endblock title %}</title>
+    </head>
 
     <body>
-        <nav>
-            {% if user.is_authenticated %}
-            <a id="id_link_dashboard" href="/Dashboard">My Dashboard</a>
-            <a id="id_link_logout" href="/Logout">Log out</a>
-            {% else %}
-            <a id="id_link_login" href="/Login">Login</a>
-            {% endif %}
+        <nav class="navbar navbar-expand-sm navbar-light bg-secondary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">Hello</a>
+                <ul class="navbar-nav ms-auto mb-lb-0 justify-content-right">
+                    <li class="nav-item"><a class="nav-link" id="id_link_home" href="/">Home</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" id="id_link_dashboard" href="/Dashboard">My Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" id="id_link_logout" href="/Logout">Log out</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" id="id_link_login" href="/Login">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </nav>
         {% block content %}
         New content
