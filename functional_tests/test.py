@@ -92,7 +92,7 @@ class ExistingUserLoginTest(StaticLiveServerTestCase):
         self.assertIn(f"Dashboard - {self.username}", self.browser.title)
         
 
-class NewMealplanTest(LiveServerTestCase):
+class NewMealplanTest(StaticLiveServerTestCase):
     username = "David"
     password = "password123"
 
