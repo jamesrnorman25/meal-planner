@@ -118,7 +118,7 @@ class NewMealplanTest(StaticLiveServerTestCase):
         self.assertIn(self.username, self.browser.title)
 
         # He clicks on the button to add a new weekly mealplan.
-        mealplan_button = self.browser.find_element(By.ID, "id_add_button")
+        mealplan_button = self.browser.find_element(By.ID, "id_link_new_mealplan")
         mealplan_button.click()
         time.sleep(3)
 
