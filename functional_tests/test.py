@@ -1,13 +1,13 @@
 import unittest
 from django.contrib.auth.models import User
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
     username = "David"
     password = "i@N7bR4ASnL0q$"
     def setUp(self) -> None:
@@ -57,7 +57,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn("Home", self.browser.title)
 
 
-class ExistingUserLoginTest(LiveServerTestCase):
+class ExistingUserLoginTest(StaticLiveServerTestCase):
     username = "David"
     password = "password123"
 
