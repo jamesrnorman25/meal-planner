@@ -124,6 +124,31 @@ class NewMealplanTest(StaticLiveServerTestCase):
 
         # He is directed to a mealplan creation page.
         self.assertEqual("New meal plan", self.browser.title)
+
+        # He types the following mealplan into the boxes, with the title "Next Week" before clicking "Save"
+        # Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday
+        # ------ | ------- | --------- | -------- | ------ | -------- | ------
+        # Salad  | Chicken | Spag bol  | Fajitas  | Salmon |   Stew   | Roast
+
+        monday_box = self.browser.find_element(By.ID, "id_monday_input")
+        monday_box.send_keys("Salad")
+        tuesday_box = self.browser.find_element(By.ID, "id_tuesday_input")
+        tuesday_box.send_keys("Chicken")
+        wednesday_box = self.browser.find_element(By.ID, "id_wednesday_input")
+        wednesday_box.send_keys("Spag bol")
+        thursday_box = self.browser.find_element(By.ID, "id_thursday_input")
+        thursday_box.send_keys("Fajitas")
+        friday_box = self.browser.find_element(By.ID, "id_friday_input")
+        friday_box.send_keys("Salmon")
+        saturday_box = self.browser.find_element(By.ID, "id_saturday_input")
+        saturday_box.send_keys("Stew")
+        sunday_box = self.browser.find_element(By.ID, "id_sunday_input")
+        sunday_box.send_keys("Roast")
+        submit_box = self.browser.find_element(By.ID, id=submit_box)
+        submit_box.click()
+        time.sleep(3)
+
+
         self.fail("Finish the test!")
 
 
