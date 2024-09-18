@@ -130,26 +130,29 @@ class NewMealplanTest(StaticLiveServerTestCase):
         # ------ | ------- | --------- | -------- | ------ | -------- | ------
         # Salad  | Chicken | Spag bol  | Fajitas  | Salmon |   Stew   | Roast
 
-        monday_box = self.browser.find_element(By.ID, "id_monday_input")
+        name_box = self.browser.find_element(By.ID, "id_name")
+        name_box.send_keys("Next Week")
+        monday_box = self.browser.find_element(By.ID, "id_monday")
         monday_box.send_keys("Salad")
-        tuesday_box = self.browser.find_element(By.ID, "id_tuesday_input")
+        tuesday_box = self.browser.find_element(By.ID, "id_tuesday")
         tuesday_box.send_keys("Chicken")
-        wednesday_box = self.browser.find_element(By.ID, "id_wednesday_input")
+        wednesday_box = self.browser.find_element(By.ID, "id_wednesday")
         wednesday_box.send_keys("Spag bol")
-        thursday_box = self.browser.find_element(By.ID, "id_thursday_input")
+        thursday_box = self.browser.find_element(By.ID, "id_thursday")
         thursday_box.send_keys("Fajitas")
-        friday_box = self.browser.find_element(By.ID, "id_friday_input")
+        friday_box = self.browser.find_element(By.ID, "id_friday")
         friday_box.send_keys("Salmon")
-        saturday_box = self.browser.find_element(By.ID, "id_saturday_input")
+        saturday_box = self.browser.find_element(By.ID, "id_saturday")
         saturday_box.send_keys("Stew")
-        sunday_box = self.browser.find_element(By.ID, "id_sunday_input")
+        sunday_box = self.browser.find_element(By.ID, "id_sunday")
         sunday_box.send_keys("Roast")
-        submit_box = self.browser.find_element(By.ID, id=submit_box)
+        submit_box = self.browser.find_element(By.ID, "id_submit")
+        self.assertEqual(submit_box.text, "Save")
         submit_box.click()
         time.sleep(3)
 
-
-        self.fail("Finish the test!")
+        # He sees that he has been redirected to a page displaying the mealplan.
+        self.assertNotEqual(f"{self.live_server_url}/mealplans/new", self.browser.current_url)
 
 
 if __name__ == "__main__":
