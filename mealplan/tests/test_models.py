@@ -1,5 +1,6 @@
 """Tests Mealplan model and its associated form."""
 
+from django.template.defaultfilters import slugify
 from django.test import TestCase
 from mealplan.models import Mealplan
 
@@ -18,3 +19,4 @@ class MealplanModelTest(TestCase):
         saved_items = Mealplan.objects.all()
         self.assertEqual(saved_items.count(), 1)
         self.assertEqual(saved_items[0].name, "Test Mealplan")
+        self.assertEqual(saved_items[0].slug, slugify(mealplan.name))

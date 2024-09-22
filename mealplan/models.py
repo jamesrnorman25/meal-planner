@@ -1,5 +1,6 @@
 """Models for meal plans."""
 from django.db import models
+from django.template.defaultfilters import slugify
 
 class Mealplan(models.Model):
     name = models.CharField(max_length=100, default="")
@@ -10,3 +11,8 @@ class Mealplan(models.Model):
     friday = models.CharField(max_length=100, default="")
     saturday = models.CharField(max_length=100, default="")
     sunday = models.CharField(max_length=100, default="")
+    slug = models.SlugField(default="")
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Mealplan, self).save(*args, **kwargs)
