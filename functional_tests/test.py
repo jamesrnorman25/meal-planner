@@ -5,6 +5,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
+from .utils import wait_for
+
+
+MAX_WAIT = 3  # Max wait for browser load.
+WAIT_STEP = 0.5  # Wait step for browser load.
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
@@ -33,8 +38,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # Intrigued, David clicks on the link and is directed to the account creation page.
         create_account_link.click()
-        time.sleep(1)
-        self.assertIn("Create Account", self.browser.title)
+        
+        wait_for(lambda: self.assertIn("Create Account", self.browser.title), MAX_WAIT, WAIT_STEP)
 
         # He types his name (David) into the Username box and i@N7bR4ASnL0q$ into the password box (David has a very good memory and really understands cybersecurity)
         # before pressing Enter.
@@ -47,14 +52,12 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # When he hits enter, he logs in and is redirected to his dashboard.
         password_confirmation_box.send_keys(Keys.ENTER)
-        time.sleep(3)
-        self.assertIn(f"Dashboard - {self.username}", self.browser.title)
+        wait_for(lambda: self.assertIn(f"Dashboard - {self.username}", self.browser.title), MAX_WAIT, WAIT_STEP)
 
         # Satisfied, he clicks on the log out button and is redirected back to the homepage.
         logout_button = self.browser. find_element(By.ID, "id_link_logout")
         logout_button.click()
-        time.sleep(3)
-        self.assertIn("Home", self.browser.title)
+        wait_for(lambda: self.assertIn("Home", self.browser.title), MAX_WAIT, WAIT_STEP)
 
 
 class ExistingUserLoginTest(StaticLiveServerTestCase):
@@ -77,8 +80,8 @@ class ExistingUserLoginTest(StaticLiveServerTestCase):
         # He clicks on the log in link in the navbar and is directed to the login page.
         login_link = self.browser.find_element(By.ID, "id_link_login")
         login_link.click()
-        time.sleep(1)
-        self.assertIn("Login", self.browser.title)
+        
+        wait_for(lambda: self.assertIn("Login", self.browser.title), MAX_WAIT, WAIT_STEP)
         
         # David types his username and password into the required boxes and hits Enter
         username_box = self.browser.find_element(By.ID, "id_username")
@@ -86,10 +89,9 @@ class ExistingUserLoginTest(StaticLiveServerTestCase):
         username_box.send_keys(self.username)
         password_box.send_keys(self.password)
         password_box.send_keys(Keys.ENTER)
-        time.sleep(3)
 
         # As before, he is redirected to his dashboard.
-        self.assertIn(f"Dashboard - {self.username}", self.browser.title)
+        wait_for(lambda: self.assertIn(f"Dashboard - {self.username}", self.browser.title), MAX_WAIT, WAIT_STEP)
         
 
 class NewMealplanTest(StaticLiveServerTestCase):
@@ -120,10 +122,9 @@ class NewMealplanTest(StaticLiveServerTestCase):
         # He clicks on the button to add a new weekly mealplan.
         mealplan_button = self.browser.find_element(By.ID, "id_link_new_mealplan")
         mealplan_button.click()
-        time.sleep(3)
 
         # He is directed to a mealplan creation page.
-        self.assertEqual("New meal plan", self.browser.title)
+        wait_for(lambda: self.assertEqual("New meal plan", self.browser.title), MAX_WAIT, WAIT_STEP)
 
         # He types the following mealplan into the boxes, with the title "Next Week" before clicking "Save"
         # Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday
@@ -149,10 +150,10 @@ class NewMealplanTest(StaticLiveServerTestCase):
         submit_box = self.browser.find_element(By.ID, "id_submit")
         self.assertEqual(submit_box.text, "Save")
         submit_box.click()
-        time.sleep(3)
+        
 
         # He sees that he has been redirected to a page displaying the mealplan.
-        self.assertNotEqual(f"{self.live_server_url}/mealplans/new", self.browser.current_url)
+        wait_for(lambda: self.assertNotEqual(f"{self.live_server_url}/mealplans/new", self.browser.current_url), MAX_WAIT, WAIT_STEP)
 
 
 if __name__ == "__main__":
