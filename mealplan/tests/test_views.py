@@ -31,7 +31,7 @@ class NewMealplanPostTest(TestCase):
         self.response = self.client.post("/mealplans/new", data=self.data)
 
     def test_redirects_appropriately(self) -> None:
-        slug = slugify(self.data["name"])
+        slug = Mealplan.objects.filter(name="Test Mealplan")[0].slug
         self.assertRedirects(self.response, f"/mealplans/{slug}")
 
     def test_saves_mealplan(self) -> None:
