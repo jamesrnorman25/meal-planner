@@ -37,3 +37,20 @@ class NewMealplanPostTest(TestCase):
     def test_saves_mealplan(self) -> None:
         self.assertTrue(Mealplan.objects.filter(name="Test Mealplan").exists())
 
+class ExistingMealplanDisplayTest(TestCase):
+    def setUp(self) -> None:
+        self.mealplan = Mealplan()
+        self.mealplan.name = "Test Mealplan"
+        self.mealplan.monday = "Monday's meal"
+        self.mealplan.tuesday = "Tuesday's meal"
+        self.mealplan.wednesday = "Wednesday's meal"
+        self.mealplan.thursday = "Thursday's meal"
+        self.mealplan.friday = "Friday's meal"
+        self.mealplan.saturday = "Saturday's meal"
+        self.mealplan.sunday = "Sunday's meal"
+        self.mealplan.save()
+        self.response = self.client.get(f"/mealplans/{self.mealplan.slug}")
+
+    def test_uses_correct_template(self) -> None:
+        self.assertTemplateUsed(self.response, "existing.html")
+

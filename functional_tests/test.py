@@ -152,8 +152,10 @@ class NewMealplanTest(StaticLiveServerTestCase):
         submit_box.click()
         
 
-        # He sees that he has been redirected to a page displaying the mealplan.
+        # He sees that he has been redirected to a page with a different URL displaying the mealplan.
         wait_for(lambda: self.assertNotEqual(f"{self.live_server_url}/mealplans/new", self.browser.current_url), MAX_WAIT, WAIT_STEP)
+        self.assertIn("Next Week", self.browser.find_element(By.TAG_NAME, "h1").text)
+        time.sleep(10)
 
 
 if __name__ == "__main__":
