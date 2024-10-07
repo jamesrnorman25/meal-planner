@@ -41,8 +41,13 @@ class CreateAccountPostTest(TestCase):
         self.assertRedirects(self.response, '/Dashboard')
         
 
-class DashboardPostTest(TestCase):
-    def setUp(self) ->None:
+class DashboardLoggedInGetTest(TestCase):
+    username = "test"
+    password = "password123"
+    def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user)
         self.response = self.client.get("/Dashboard")
 
     def test_can_get_page(self) -> None:
@@ -50,6 +55,13 @@ class DashboardPostTest(TestCase):
 
     def test_uses_dashboard_template(self) -> None:
         self.assertTemplateUsed(self.response, "dashboard.html")
+
+class DashboardLoggedOutGetTest(TestCase):
+    def setUp(self) -> None:
+        self.response = self.client.get("/Dashboard")
+
+    def test_redirects_to_login(self) -> None:
+        self.assertRedirects(self.response, "/Login")
 
 
 class LoginGetTest(TestCase):

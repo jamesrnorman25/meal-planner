@@ -1,16 +1,27 @@
+from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.test import TestCase
 from mealplan.models import Mealplan
 
 class RedirectionTest(TestCase):
+    username = "test"
+    password = "password123"
     def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user=user)
         self.response = self.client.get("/mealplans/")
 
     def test_redirects(self) -> None:
         self.assertRedirects(self.response, "/mealplans/new")
 
 class NewMealplanTest(TestCase):
+    username = "test"
+    password = "password123"
     def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user=user)
         self.response = self.client.get("/mealplans/new")
 
     def test_uses_correct_template(self) -> None:
@@ -27,7 +38,12 @@ class NewMealplanPostTest(TestCase):
         "saturday": "Saturday's meal",
         "sunday": "Sunday's meal"
     }
+    username = "test"
+    password = "password123"
     def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user=user)
         self.response = self.client.post("/mealplans/new", data=self.data)
 
     def test_redirects_appropriately(self) -> None:
@@ -36,6 +52,16 @@ class NewMealplanPostTest(TestCase):
 
     def test_saves_mealplan(self) -> None:
         self.assertTrue(Mealplan.objects.filter(name="Test Mealplan").exists())
+
+    def test_includes_user(self) -> None:
+        self.assertIsNotNone(Mealplan.objects.filter(name="Test Mealplan")[0].user)
+
+class LoggedOutNewMealplanTest(TestCase):
+    def setUp(self) -> None:
+        self.response = self.client.get("/mealplans/new")
+    
+    def test_redirects_to_login(self) -> None:
+        self.assertRedirects(self.response, "/Login")
 
 class ExistingMealplanDisplayTest(TestCase):
     def setUp(self) -> None:
