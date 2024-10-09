@@ -16,11 +16,14 @@
                 <a class="btn btn-info" id="id_link_new_mealplan" href="/mealplans/new">New mealplan</a>
             </div>
         </div>
-        <div class="row justify-content-center">
+        <main style="margin: 2px">
             {% for mealplan in mealplans %}
-            <div class="card">
-                <h2 id="id_mealplan_header">{{ mealplan.name }}</h2>
+            <div class="card" style="width: 18rem">
+                <div class="card-body text-center">
+                    <h2 class="card-title" id="id_mealplan_header">{{ mealplan.name }}</h2>
+                    <a class="btn btn-primary" href="/mealplans/{{mealplan.slug}}"> View </a>
+                </div>
             </div>
             {% endfor %}
-        </div>
+        </main>
 {% endblock content %}
