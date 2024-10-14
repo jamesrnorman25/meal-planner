@@ -23,7 +23,7 @@ def dashboard(request):
     if request.user.is_authenticated:
         mealplans = Mealplan.objects.filter(user=request.user)
         # print(Mealplan.objects.all())
-        print([mealplan for mealplan in mealplans])
+        # print([mealplan for mealplan in mealplans])
         # mealplan_ids = {mealplan.name: "_".join(mealplan.name.split(" ")) for mealplan in mealplans}
         return render(request, "dashboard.html", context={"mealplans": mealplans})
     else:

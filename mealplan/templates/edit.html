@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit Mealplan {% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h1>Edit Plan</h1>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn btn-info" id="id_submit" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

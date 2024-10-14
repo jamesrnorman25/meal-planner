@@ -32,3 +32,16 @@ def new_mealplan(request):
             return render(request, "new.html", context={"form": form})
     else:
         return redirect("/Login")
+    
+def edit_mealplan(request, slug):
+    mealplan = Mealplan.objects.get(slug=slug)
+    if request.method == "POST":
+        form = MealplanForm(data=request.POST, instance=mealplan)
+        if form.is_valid():
+            print(form["monday"])
+            form.save()
+            print(mealplan.monday)
+            return redirect(f"/mealplans/{slug}")
+    else:
+        form = MealplanForm(instance=mealplan)
+        return render(request, "edit.html", context={"form": form})

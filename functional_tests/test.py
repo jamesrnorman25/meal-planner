@@ -7,6 +7,8 @@ from selenium.webdriver.common.keys import Keys
 import time
 from .utils import wait_for
 
+from mealplan.models import Mealplan
+
 
 MAX_WAIT = 3  # Max wait for browser load.
 WAIT_STEP = 0.5  # Wait step for browser load.
@@ -158,7 +160,52 @@ class NewMealplanTest(StaticLiveServerTestCase):
         
         # Finally, he returns to his dashboard to see his mealplan displayed there.
         self.browser.find_element(By.ID, "id_link_dashboard").click()
-        wait_for(lambda: self.assertEqual("Next Week", self.browser.find_element(By.ID, "id_mealplan_header").text), MAX_WAIT, WAIT_STEP)
+        wait_for(lambda: self.assertEqual("Next Week", self.browser.find_element(By.NAME, "header-next-week").text), MAX_WAIT, WAIT_STEP)
+
+class ExistingMealplanTest(StaticLiveServerTestCase):
+    username = "David"
+    password = "password123"
+    mealplan_data = {"name": "Next week", "monday": "Salad", "tuesday": "Chicken",
+                     "wednesday": "Spag bol", "thursday": "Fajitas", "friday": "Salmon",
+                     "saturday": "Stew", "sunday": "Roast"}
+
+    def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user=user)
+        mealplan = Mealplan.objects.create(**self.mealplan_data)
+        mealplan.user = user
+        mealplan.save()
+        cookie = self.client.cookies["sessionid"]
+        self.browser = webdriver.Firefox()
+        self.browser.get(self.live_server_url)
+        self.browser.add_cookie({"name": "sessionid", "value": cookie.value, "secure": False, "path": '/'})
+        self.browser.refresh()
+
+    def tearDown(self):
+        self.browser.close()
+        User.objects.filter(username=self.username).delete()
+        Mealplan.objects.filter(name=self.mealplan_data["name"]).delete()
+
+    def test_user_can_edit_mealplans(self)-> None:
+        # David has realised he needs to change his set mealplan for next week.
+        # He navigates to his dashboard.
+        self.browser.get(f"{self.live_server_url}/Dashboard")
+        # He clicks on the "Edit Menu" button under his mealplan for the week.
+        edit_button = self.browser.find_element(By.NAME, "link-edit-next-week")
+        edit_button.click()
+
+        # He is now taken to the mealplan's edit option.
+        wait_for(lambda: self.assertIn("Edit Mealplan", self.browser.title), MAX_WAIT, WAIT_STEP)
+        # He changes Monday's meal to "Leftovers" and clicks "Save".
+        monday_input = self.browser.find_element(By.ID, "id_monday")
+        monday_input.clear()
+        monday_input.send_keys("Leftovers")
+        self.browser.find_element(By.ID, "id_submit").click()
+        # He is then redirected to the page for the mealplan and notices that it now displays "Leftovers" for Monday's meal..
+        wait_for(lambda: self.assertIn("Next week".upper(), self.browser.title.upper()), MAX_WAIT, WAIT_STEP)
+        monday = self.browser.find_element(By.ID, "id_monday")
+        self.assertIn("Leftovers", monday.text)
 
 
 if __name__ == "__main__":

@@ -80,3 +80,45 @@ class ExistingMealplanDisplayTest(TestCase):
     def test_uses_correct_template(self) -> None:
         self.assertTemplateUsed(self.response, "existing.html")
 
+class EditMealplanDisplayTest(TestCase):
+    def setUp(self) -> None:
+        self.mealplan = Mealplan()
+        self.mealplan.name = "Test Mealplan"
+        self.mealplan.monday = "Monday's meal"
+        self.mealplan.tuesday = "Tuesday's meal"
+        self.mealplan.wednesday = "Wednesday's meal"
+        self.mealplan.thursday = "Thursday's meal"
+        self.mealplan.friday = "Friday's meal"
+        self.mealplan.saturday = "Saturday's meal"
+        self.mealplan.sunday = "Sunday's meal"
+        self.mealplan.save()
+        self.response = self.client.get(f"/mealplans/{self.mealplan.slug}/edit")
+
+    def test_page_exists(self) -> None:
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_uses_correct_template(self) -> None:
+        self.assertTemplateUsed(self.response, "edit.html")
+
+class EditMealplanPostTest(TestCase):
+    def setUp(self) -> None:
+        self.mealplan = Mealplan()
+        self.mealplan.name = "Test Mealplan"
+        self.mealplan.monday = "Monday's meal"
+        self.mealplan.tuesday = "Tuesday's meal"
+        self.mealplan.wednesday = "Wednesday's meal"
+        self.mealplan.thursday = "Thursday's meal"
+        self.mealplan.friday = "Friday's meal"
+        self.mealplan.saturday = "Saturday's meal"
+        self.mealplan.sunday = "Sunday's meal"
+        self.mealplan.save()
+        self.response = self.client.post(f"/mealplans/{self.mealplan.slug}/edit", data={"name": "Test Mealplan", "monday": "New meal",
+                                                                                        "tuesday": "Tuesday's meal", "wednesday": "Wednesday's meal",
+                                                                                        "thursday": "Thursday's meal", "friday": "Friday's meal",
+                                                                                        "saturday": "Saturday's meal", "sunday": "Sunday's meal"})
+        
+    def test_can_edit_mealplan(self) -> None:
+        self.assertEqual(Mealplan.objects.get(name=self.mealplan.name).monday, "New meal")
+
+    def test_redirects_correctly(self) -> None:
+        self.assertRedirects(self.response, f"/mealplans/{self.mealplan.slug}")
