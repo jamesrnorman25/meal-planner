@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %} {{mealplan.name}} {% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h1>{{mealplan.name}}</h1>
+        <br>
+        <p id="id_monday">Monday: {{mealplan.monday}}</p>
+        <p id="id_tuesday">Tuesday: {{mealplan.tuesday}}</p>
+        <p id="id_wednesday">Wednesday: {{mealplan.wednesday}}</p>
+        <p id="id_thursday">Thursday: {{mealplan.thursday}}</p>
+        <p id="id_friday">Friday: {{mealplan.tuesday}}</p>
+        <p id="id_saturday">Saturday: {{mealplan.saturday}}</p>
+        <p id="id_sunday">Sunday: {{mealplan.sunday}}</p>
+
+        <a class="btn btn-info" id="id_edit_mealplan" href="/mealplans/{{mealplan.slug}}/edit">Edit mealplan</a>
+    </div>
+</div>
+{% endblock content %}

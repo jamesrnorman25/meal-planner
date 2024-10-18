@@ -1,9 +1,30 @@
 {% extends "base.html" %}
-{% block title %} Dashboard - {{ username }} {% endblock title %}
+{% block title %} Dashboard - {{ user.username }} {% endblock title %}
 
  {% block content %}
-        <h1>
-            Welcome
-        </h1>
-        <a id="id_link_create_account" class="btn btn-info" href="/Create-Account">Create Account</a>
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <h1>Hello, {{user.username}}</h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                
+            </div>
+            <div class="col-lg-6 text-center"></div>
+            <div class="col-lg-6 text-center">
+                <a class="btn btn-info" id="id_link_new_mealplan" href="/mealplans/new">New mealplan</a>
+            </div>
+        </div>
+        <main style="margin: 2px">
+            {% for mealplan in mealplans %}
+            <div class="card" style="width: 18rem">
+                <div class="card-body text-center">
+                    <h2 class="card-title" id="id_mealplan_header" name="header-{{ mealplan.name | slugify }}">{{ mealplan.name }}</h2>
+                    <a class="btn btn-primary" href="/mealplans/{{mealplan.slug}}">View</a>
+                    <a class="btn btn-primary" href="/mealplans/{{mealplan.slug}}/edit" name="link-edit-{{mealplan.name|slugify}}">Edit</a>
+                </div>
+            </div>
+            {% endfor %}
+        </main>
 {% endblock content %}

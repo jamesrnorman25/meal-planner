@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from mealplan.models import Mealplan
 
 def create_account(request):
     if request.method == "POST":
@@ -18,18 +20,25 @@ def homepage(request):
     return render(request, "home.html")
 
 def dashboard(request):
-    return render(request, "dashboard.html", context={"username": request.user.username})
+    if request.user.is_authenticated:
+        mealplans = Mealplan.objects.filter(user=request.user)
+        # print(Mealplan.objects.all())
+        # print([mealplan for mealplan in mealplans])
+        # mealplan_ids = {mealplan.name: "_".join(mealplan.name.split(" ")) for mealplan in mealplans}
+        return render(request, "dashboard.html", context={"mealplans": mealplans})
+    else:
+        return redirect("/Login")
 
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
-            print("Form valid!")
+            # print("Form valid!")
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
             if user is not None:
-                print("User logged in successfully")
+                # print("User logged in successfully")
                 login(request, user)
                 return redirect("/Dashboard")
     else:
