@@ -1,3 +1,4 @@
+import os
 import unittest
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -19,6 +20,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
     password = "i@N7bR4ASnL0q$"
     def setUp(self) -> None:
         self.browser = webdriver.Firefox()
+        test_server = os.environ.get("TEST_SERVER")
+        if test_server:
+            self.live_server_url = f"http://{test_server}"
 
     def tearDown(self) -> None:
         self.browser.close()
@@ -70,6 +74,9 @@ class ExistingUserLoginTest(StaticLiveServerTestCase):
         user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
         user.save()
         self.browser = webdriver.Firefox()
+        test_server = os.environ.get("TEST_SERVER")
+        if test_server:
+            self.live_server_url = f"http://{test_server}"
 
     
     def tearDown(self) -> None:
@@ -106,6 +113,9 @@ class NewMealplanTest(StaticLiveServerTestCase):
         self.client.force_login(user=user)
         cookie = self.client.cookies["sessionid"]
         self.browser = webdriver.Firefox()
+        test_server = os.environ.get("TEST_SERVER")
+        if test_server:
+            self.live_server_url = f"http://{test_server}"
         self.browser.get(self.live_server_url)
         self.browser.add_cookie({"name": "sessionid", "value": cookie.value, "secure": False, "path": '/'})
         self.browser.refresh()
@@ -179,6 +189,9 @@ class ExistingMealplanTest(StaticLiveServerTestCase):
         cookie = self.client.cookies["sessionid"]
         self.browser = webdriver.Firefox()
         self.browser.get(self.live_server_url)
+        test_server = os.environ.get("TEST_SERVER")
+        if test_server:
+            self.live_server_url = f"http://{test_server}"
         self.browser.add_cookie({"name": "sessionid", "value": cookie.value, "secure": False, "path": '/'})
         self.browser.refresh()
 
