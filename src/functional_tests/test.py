@@ -16,7 +16,7 @@ WAIT_STEP = 0.5  # Wait step for browser load.
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
-    username = "David"
+    username = f"David-{time.time()}"
     password = "i@N7bR4ASnL0q$"
     def setUp(self) -> None:
         self.browser = webdriver.Firefox()
@@ -48,7 +48,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         wait_for(lambda: self.assertIn("Create Account", self.browser.title), MAX_WAIT, WAIT_STEP)
 
         # He types his name (David) into the Username box and i@N7bR4ASnL0q$ into the password box (David has a very good memory and really understands cybersecurity)
-        # before pressing Enter.
+        # before pressing Enter. (N.B. He also includes the UNIX timestamp for testing reasons to make sure each time he does this is unique...)
         username_box = self.browser.find_element(By.ID, "id_username")
         password_box = self.browser.find_element(By.ID, "id_password1")
         password_confirmation_box = self.browser.find_element(By.ID, "id_password2")
