@@ -1,3 +1,4 @@
+from django import get_version
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -12,11 +13,15 @@ def create_account(request):
             user = form.save()
             login(request, user)
             return redirect("/Dashboard")
+        else:
+            for message in form.error_messages:
+                print(form.error_messages[message])
     else:
         form = UserCreationForm
-        return render(request, "create_account.html", context={"form": form})
+    return render(request, "create_account.html", context={"form": form})
 
 def homepage(request):
+    print(get_version())
     return render(request, "home.html")
 
 def dashboard(request):
@@ -30,8 +35,11 @@ def dashboard(request):
         return redirect("/Login")
 
 def login_view(request):
+    print(User.objects.all())
     if request.method == "POST":
-        form = AuthenticationForm(request=request, data=request.POST)
+        form = AuthenticationForm(request, data=request.POST)
+        print(request.POST)
+        print(User.objects.all())
         if form.is_valid():
             # print("Form valid!")
             username = form.cleaned_data.get("username")
@@ -41,9 +49,11 @@ def login_view(request):
                 # print("User logged in successfully")
                 login(request, user)
                 return redirect("/Dashboard")
+        for message in form.error_messages:
+            print(form.error_messages[message])
     else:
         form = AuthenticationForm
-        return render(request, "login.html", context={"form": form})
+    return render(request, "login.html", context={"form": form})
     
 def logout_view(request):
     logout(request)

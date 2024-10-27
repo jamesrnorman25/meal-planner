@@ -17,7 +17,13 @@
                 <div class="invalid-feedback">{{ error }}</div><br>
             {% endif %}
             {% csrf_token %}
+            {% for _, errors in form.errors.items %}
+                {% for error in errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
             <button id="id_submit" class="btn btn-info" type="submit">Create Account</button>
+            
         </form>
         <br>
         <p>Already got an account? <a href="/Login">Log in</a></p>
