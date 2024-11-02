@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    # command: conda run --no-capture -n meal_planner python manage.py runserver 0.0.0.0:8888
+    ports:
+      - "8888:8888"
+    volumes:
+      - .\data\db.sqlite3:/src/db.sqlite3
+  # db:
+  #   image: postgres:15
+  #   volumes:
+  #     - data:/var/lib/postgresql/data/
+  #   environment:
+  #     - POSTGRES_USER=mealplan
+  #     - POSTGRES_PASSWORD=mealplan
+  #     - POSTGRES_DB=mealplan_dev
