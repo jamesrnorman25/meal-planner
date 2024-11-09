@@ -1,6 +1,9 @@
 from django import forms
 from mealplan.models import Mealplan
 
+import logging
+logger = logging.getLogger(__name__)
+
 class MealplanForm(forms.models.ModelForm):
     class Meta:
         model = Mealplan
