@@ -141,6 +141,13 @@ LOGGING = {
             "formatter": "standard",
             "filters": [],
         },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "formatter": "standard",
+            "filename": "logfile.log",
+            "filters": [],
+        },
     },
     "loggers": {
         logger_name: {
@@ -150,6 +157,6 @@ LOGGING = {
     },
     "root": {
         "level": "DEBUG",
-        "handlers": ["console"]
+        "handlers": ["console", "file",]
     },
 }
