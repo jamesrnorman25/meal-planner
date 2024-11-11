@@ -13,9 +13,11 @@
             {{form.password1}}<br>
             {{form.password2.label}}<br>
             {{form.password2}}<br><br>
-            {% if error %}
-                <div class="invalid-feedback">{{ error }}</div><br>
-            {% endif %}
+            {% for _, errors in form.errors.items %}
+                {% for error in errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
             {% csrf_token %}
             <button id="id_submit" class="btn btn-info" type="submit">Create Account</button>
         </form>
