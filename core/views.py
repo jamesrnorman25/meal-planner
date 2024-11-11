@@ -5,6 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from mealplan.models import Mealplan
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 def create_account(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
@@ -17,13 +21,14 @@ def create_account(request):
         return render(request, "create_account.html", context={"form": form})
 
 def homepage(request):
+    logger.info("Retrieving homepage")
     return render(request, "home.html")
 
 def dashboard(request):
     if request.user.is_authenticated:
         mealplans = Mealplan.objects.filter(user=request.user)
-        # print(Mealplan.objects.all())
-        # print([mealplan for mealplan in mealplans])
+        logger.debug(Mealplan.objects.all())
+        logger.debug([mealplan for mealplan in mealplans])
         # mealplan_ids = {mealplan.name: "_".join(mealplan.name.split(" ")) for mealplan in mealplans}
         return render(request, "dashboard.html", context={"mealplans": mealplans})
     else:
@@ -33,7 +38,7 @@ def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
-            # print("Form valid!")
+            logger.info("Form valid!")
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)

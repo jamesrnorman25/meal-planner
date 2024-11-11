@@ -8,6 +8,10 @@ from django.contrib.auth import get_user
 from django.contrib.auth.models import User
 
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class HomepageTest(TestCase):
 
     def test_homepage_template_used(self) -> None:

@@ -4,6 +4,10 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from time import time
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class Mealplan(models.Model):
     name = models.CharField(max_length=100, default="")
     monday = models.CharField(max_length=100, default="")

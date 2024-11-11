@@ -4,6 +4,10 @@ from django.http import HttpResponse
 from mealplan.forms import MealplanForm
 from mealplan.models import Mealplan
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 # Create your views here.
 
 def blank(request):
