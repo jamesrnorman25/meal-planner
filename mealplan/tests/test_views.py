@@ -56,6 +56,18 @@ class NewMealplanPostTest(TestCase):
     def test_includes_user(self) -> None:
         self.assertIsNotNone(Mealplan.objects.filter(name="Test Mealplan")[0].user)
 
+class InvalidMealplanPostTest(TestCase):
+    username = "test"
+    password = "password123"
+    def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user=user)
+        
+    def test_handles_invalid_mealplan(self) -> None:
+        response = self.client.post("/mealplans/new", data={})
+        self.assertIsNotNone(response)
+
 class LoggedOutNewMealplanTest(TestCase):
     def setUp(self) -> None:
         self.response = self.client.get("/mealplans/new")

@@ -13,6 +13,11 @@
         <form method="post">
             {% csrf_token %}
             {{form.as_p}}
+            {% for _, errors in form.errors.items %}
+                {% for error in errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
             <button class="btn btn-info" id="id_submit" type="submit">Save</button>
         </form>
     </div>

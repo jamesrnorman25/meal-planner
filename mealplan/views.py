@@ -33,7 +33,7 @@ def new_mealplan(request):
                 print("Form invalid")
         else:
             form = MealplanForm
-            return render(request, "new.html", context={"form": form})
+        return render(request, "new.html", context={"form": form})
     else:
         return redirect("/Login")
     
