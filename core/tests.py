@@ -30,7 +30,7 @@ class CreateAccountPostTest(TestCase):
     def setUp(self) -> None:
         self.username = "test"
         self.password = "i@N7bR4ASnL0q$"
-        self.response = self.client.post('/Create-Account', data={"username": self.username, "password1": self.password, "password2": self.password})
+        self.response = self.client.post("/Create-Account", data={"username": self.username, "password1": self.password, "password2": self.password})
 
     def test_saves_user(self) -> None:
         self.assertTrue(User.objects.filter(username=self.username).exists())
@@ -43,6 +43,15 @@ class CreateAccountPostTest(TestCase):
 
     def test__post_request_redirects(self) -> None:
         self.assertRedirects(self.response, '/Dashboard')
+
+class CreateAccountInvalidPostTest(TestCase):
+    def setUp(self) -> None:
+        self.username="test"
+        self.password="i@N7bR4ASnL0q$"
+    
+    def test_handles_invalid_password(self) -> None:
+        response = self.client.post("/Create-Account", data={"username": self.username, "password1": self.password, "password2": ""})
+        self.assertIsNotNone(response)
         
 
 class DashboardLoggedInGetTest(TestCase):
@@ -95,6 +104,20 @@ class LoginValidPostTest(TestCase):
         self.assertEqual(user.username, self.username)
         self.assertTrue(user.is_authenticated)
 
+class LoginInvalidPostTest(TestCase):
+    username = "test"
+    password = "password123"
+    def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+    
+    def test_handles_incorrect_password(self) -> None:
+        response = self.client.post("/Login", data={"username": self.username, "password": "password124"})
+        self.assertIsNotNone(response)
+
+    def test_handles_incorrect_username(self) -> None:
+        response = self.client.post("/Login", data={"username": self.username + "abc", "password": self.password})
+        self.assertIsNotNone(response)
 
 class LogoutTest(TestCase):
     username = "test"

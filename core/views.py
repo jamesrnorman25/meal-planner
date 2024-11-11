@@ -18,7 +18,7 @@ def create_account(request):
             return redirect("/Dashboard")
     else:
         form = UserCreationForm
-        return render(request, "create_account.html", context={"form": form})
+    return render(request, "create_account.html", context={"form": form})
 
 def homepage(request):
     logger.info("Retrieving homepage")
@@ -48,7 +48,7 @@ def login_view(request):
                 return redirect("/Dashboard")
     else:
         form = AuthenticationForm
-        return render(request, "login.html", context={"form": form})
+    return render(request, "login.html", context={"form": form})
     
 def logout_view(request):
     logout(request)
