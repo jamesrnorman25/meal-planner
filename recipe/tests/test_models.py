@@ -1,0 +1,10 @@
+from django.test import TestCase
+from recipe.models import Recipe
+
+# Create your tests here.
+
+class TestRecipeModel(TestCase):
+    def setUp(self) -> None:
+        recipe = Recipe()
+        recipe.name = "Tuna Sandwich"
+        recipe.method = "Lorem ipsum dolor sit amet."
