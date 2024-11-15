@@ -12,6 +12,8 @@ WAIT_STEP = 0.5  # Wait step for browser load.
 
 
 class NewRecipeTest(StaticLiveServerTestCase):
+    username = "test_user"
+    password = "test_password123"
     def setUp(self) -> None:
         user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
         user.save()
