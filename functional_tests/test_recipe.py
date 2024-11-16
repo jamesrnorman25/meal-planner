@@ -36,7 +36,7 @@ class NewRecipeTest(StaticLiveServerTestCase):
         new_recipe_button.click()
 
         # He is taken to a page marked "New Recipe"
-        wait_for(lambda: self.assertIn(self.browser.current_url, "recipes/new"), MAX_WAIT, WAIT_STEP)
+        wait_for(lambda: self.assertIn("recipes/new", self.browser.current_url), MAX_WAIT, WAIT_STEP)
         page_header = self.browser.find_element(By.TAG_NAME, "h1")
         self.assertEqual(page_header.text, "New Recipe")
         
@@ -64,4 +64,4 @@ class NewRecipeTest(StaticLiveServerTestCase):
         submit_button.click()
 
         # He is redirected to a new page for the recipe.
-        wait_for(lambda: self.assertIn("Tuna sandwich".upper(), self.browser.title.upper()), MAX_WAIT, WAIT_STEP)
+        wait_for(lambda: self.assertIn(self.browser.title.upper(), "Tuna sandwich".upper()), MAX_WAIT, WAIT_STEP)

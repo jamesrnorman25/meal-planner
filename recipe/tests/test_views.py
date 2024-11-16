@@ -16,6 +16,11 @@ class NewRecipeGetTest(TestCase):
         response = self.client.get("/recipes/new")
         self.assertEqual(response.status_code, 200)
 
+    def test_correct_template(self) -> None:
+        self.client.force_login(self.user)
+        response = self.client.get("/recipes/new")
+        self.assertTemplateUsed(response, "new_recipe.html")
+
     def test_redirects_if_anonymous(self) -> None:
         response = self.client.get("/recipes/new")
         self.assertRedirects(response, "/Login")

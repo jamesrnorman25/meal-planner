@@ -9,4 +9,4 @@ def new_recipe(request):
         pass
     
 
-    return HttpResponse()
+    return render(request, "new_recipe.html")
