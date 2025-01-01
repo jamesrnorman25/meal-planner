@@ -16,6 +16,9 @@ def new_recipe(request):
     if request.method == "POST":
         logger.info(request.POST)
         form = RecipeForm(data=request.POST)
+        recipe = form.save()
+        formset = RecipeIngredientFormSet(data=request.POST)
+        formset.save()
     recipe = Recipe()
     recipe.save()
     form = RecipeForm(instance=recipe)

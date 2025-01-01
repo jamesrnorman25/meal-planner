@@ -13,7 +13,9 @@
     <form method="post">
         {{ form.name.label }}: {{form.name}}
         <hr>
-        {{ formset }}
+        {% for form in formset %}
+        {{ form }} <br>
+        {% endfor %}
         <hr>
         {{ form.method.label }} <br>
         {{ form.method }}
