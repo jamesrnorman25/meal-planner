@@ -10,7 +10,16 @@
 </header>
 
 <main>
-    
+    <form method="post">
+        {{ form.name.label }}: {{form.name}}
+        <hr>
+        {{ formset }}
+        <hr>
+        {{ form.method.label }} <br>
+        {{ form.method }}
+        {% csrf_token %}
+        <button class="btn btn-info" id="id_submit" type="submit">Create</button>
+    </form>
 </main>
 
 {% endblock %}
