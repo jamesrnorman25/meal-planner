@@ -21,6 +21,7 @@ class Recipe(models.Model):
 
     def save(self):
         self.slug = slugify(f"{self.name} {time()}")
+        super().save()
 
 
 class RecipeIngredient(models.Model):
