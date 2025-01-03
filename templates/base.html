@@ -1,11 +1,23 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
     <head>
+        {% comment %} Meta tags {% endcomment %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/static/bootstrap-5.3/css/bootstrap.min.css">
-        <script src="/static/bootstrap-5.3/js/bootstrap.min.js"></script>
-        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <meta name="description" content="{% block description %} Insert description here. {% endblock %}">
+
+        {% comment %} Stylesheets {% endcomment %}
+        <link rel="stylesheet" href="{% static 'static/bootstrap-5.3/css/bootstrap.min.css' %}">
+        <link href="{% static 'formset/css/bootstrap5-extra.css' %}" rel="stylesheet">
+        <link href="{% static 'formset/css/collections.css' %}" rel="stylesheet">
+
+        {% comment %} Scripts {% endcomment %}
+        <script src="{% static 'static/bootstrap-5.3/js/bootstrap.min.js' %}"></script>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js" crossorigin="anonymous"></script>
+        <script src="{% url 'javascript-catalog' %}"></script>
+        <script type="module" src="{% static 'formset/js/django-formset.js' %}"></script>
+
         <title>{% block title %}Title of page{% endblock title %}</title>
     </head>
 
