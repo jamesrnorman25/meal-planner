@@ -1,0 +1,3 @@
+[submodule "core/static/django-dynamic-formset"]
+	path = core/static/django-dynamic-formset
+	url = https://github.com/elo80ka/django-dynamic-formset.git
