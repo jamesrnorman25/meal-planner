@@ -15,18 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.decorators.cache import cache_page
-from django.views.i18n import JavaScriptCatalog
 from core import views as core_views
 from mealplan import urls as mealplan_urls
 from recipe import urls as recipe_urls
 
 urlpatterns = [
-    path(
-        'jsi18n/',
-        cache_page(3600)(JavaScriptCatalog.as_view(packages=['formset'])),
-        name='javascript-catalog'
-    ),
     path('admin/', admin.site.urls),
     path('', core_views.homepage),
     path('Create-Account', core_views.create_account),
