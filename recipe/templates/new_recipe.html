@@ -15,8 +15,12 @@
         <hr>
         {{ formset.management_form }}
         {% for form in formset.forms %}
-        {{ form }} <br>
+        <div class="formset-form">
+        <br>
+        {{ form }}
+        </div>
         {% endfor %}
+        <br>
         <hr>
         {{ form.method.label }} <br>
         {{ form.method }}
@@ -24,5 +28,13 @@
         <button class="btn btn-info" id="id_submit" type="submit">Create</button>
     </form>
 </main>
+<script type="text/javascript">
+    $(function() {
+        $('.formset-form').formset({
+            addText: '+ Add Ingredient',
+            deleteText: 'Remove',
 
+        });
+    })
+</script>
 {% endblock %}

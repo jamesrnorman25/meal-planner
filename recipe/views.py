@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 
 def new_recipe(request):
-    RecipeIngredientFormSet = formset_factory(RecipeIngredientForm, extra=5, can_delete=True)
+    RecipeIngredientFormSet = formset_factory(RecipeIngredientForm, min_num=1, extra=0, can_delete=True)
     if not request.user.is_authenticated:
         return redirect("/Login")
     if request.method == "POST":
