@@ -8,7 +8,12 @@ from django.contrib.auth.models import User
 
 logger = logging.getLogger(__name__)
 
-# Create your views here.
+def existing_recipe(request, slug):
+    if not request.user.is_authenticated:
+        return redirect("/Login")
+    else:
+        recipe = Recipe.objects.get(slug=slug)
+        return render(request, template_name="existing_recipe.html", context={"recipe": recipe})
 
 def new_recipe(request):
     RecipeIngredientFormSet = formset_factory(RecipeIngredientForm, min_num=1, extra=0, can_delete=True)
@@ -33,7 +38,7 @@ def new_recipe(request):
                     recipe_ingredient.recipe = recipe
                     recipe_ingredient.save()
                     ingredient_form.save_m2m()
-                return redirect("/Dashboard")
+                return redirect("existing_recipe", slug=recipe.slug)
         else:
             logger.error(f"Form bound: {form.is_bound}, Form valid: {form.is_valid()}")
             logger.error(f"Formset bound: {formset.is_bound}, Formset valid: {formset.is_valid()}")
