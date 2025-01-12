@@ -4,8 +4,10 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.select import Select
 import time
 from .utils import wait_for
+from recipe.models import Ingredient
 
 MAX_WAIT = 3  # Max wait for browser load.
 WAIT_STEP = 0.5  # Wait step for browser load.
@@ -15,6 +17,12 @@ class NewRecipeTest(StaticLiveServerTestCase):
     username = "test_user"
     password = "test_password123"
     def setUp(self) -> None:
+        bread = Ingredient.objects.create(name="Bread")
+        bread.save()
+        tuna = Ingredient.objects.create(name="Tuna")
+        tuna.save()
+        butter = Ingredient.objects.create(name="Butter")
+        butter.save()
         user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
         user.save()
         self.client.force_login(user=user)
@@ -46,21 +54,24 @@ class NewRecipeTest(StaticLiveServerTestCase):
         # 1. Butter two slices of bread.
         # 2. Put tuna on one slice of bread.
         # 3. Put the other slice on top.
-        recipe_name = self.browser.find_element(By.ID, "id_recipe_name")
+        recipe_name = self.browser.find_element(By.ID, "id_name")
         recipe_name.send_keys("Tuna sandwich")
-        add_ingredient_button = self.browser.find_element(By.ID, "id_button_add_ingredient")
+        add_ingredient_button = self.browser.find_element(By.CLASS_NAME, "add-row")
         add_ingredient_button.click()
         add_ingredient_button.click()
-        ingredient_fields = self.browser.find_elements(By.ID, "id_field_ingredient")
-        for field, ingredient in zip(ingredient_fields, ["Bread", "Tuna", "Butter"]):
-            field.send_keys(ingredient)
+        # ingredient_fields = self.browser.find_elements(By.ID, "id_field_ingredient")
+        for field_num, ingredient in zip(range(3), [("Bread", 2), ("Tuna", 1), ("Butter", 10)]):
+            ingredient_field = Select(self.browser.find_element(By.ID, f"id_form-{field_num}-ingredient"))
+            ingredient_field.select_by_visible_text(ingredient[0])
+            quantity_field = self.browser.find_element(By.ID, f"id_form-{field_num}-quantity")
+            quantity_field.send_keys(str(ingredient[1]))
         method_field = self.browser.find_element(By.TAG_NAME, "textarea")
         method_field.send_keys(
             """1. Butter two slices of bread.
         2. Put tuna on one slice of bread.
         3. Put the other slice on top."""
         )
-        submit_button = self.browser.find_element(By.ID, "id_button_submit")
+        submit_button = self.browser.find_element(By.ID, "id_submit")
         submit_button.click()
 
         # He is redirected to a new page for the recipe.
