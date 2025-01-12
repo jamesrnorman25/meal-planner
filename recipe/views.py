@@ -25,16 +25,18 @@ def new_recipe(request):
             recipe.user = User.objects.get(username=request.user.username)
             recipe.save()
             form.save_m2m()
-
-            ingredients = formset.save(commit=False)
-            for recipe_ingredient in ingredients:
-                recipe_ingredient.recipe = recipe
-                recipe_ingredient.save()
-            formset.save_m2m()
-            return redirect("/Dashboard")
+            if formset.is_valid():
+                logger.info("Formset is valid.")
+                logger.info(formset)
+                for ingredient_form in formset:
+                    recipe_ingredient = ingredient_form.save(commit=False)
+                    recipe_ingredient.recipe = recipe
+                    recipe_ingredient.save()
+                    ingredient_form.save_m2m()
+                return redirect("/Dashboard")
         else:
-            logger.info(f"Form bound: {form.is_bound}, Form valid: {form.is_valid()}")
-            logger.info(f"Formset bound: {formset.is_bound}, Formset valid: {formset.is_valid()}")
+            logger.error(f"Form bound: {form.is_bound}, Form valid: {form.is_valid()}")
+            logger.error(f"Formset bound: {formset.is_bound}, Formset valid: {formset.is_valid()}")
             for error in form.errors:
                 logger.error(error)
             for error in formset.errors:
