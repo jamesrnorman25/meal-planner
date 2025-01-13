@@ -23,7 +23,7 @@ class NewRecipeGetTest(TestCase):
         response = self.client.get("/recipes/new")
         self.assertTemplateUsed(response, "new_recipe.html")
 
-    def test_redirects_if_anonymous(self) -> None:
+    def test_redirects_if_not_authenticated(self) -> None:
         response = self.client.get("/recipes/new")
         self.assertRedirects(response, "/Login")
 
@@ -49,5 +49,9 @@ class ViewRecipeGetTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(f"/recipes/{self.slug}")
         self.assertTemplateUsed(response, "existing_recipe.html")
+
+    def test_redirects_if_not_authenticated(self) -> None:
+        response = self.client.get(f"/recipes/{self.slug}")
+        self.assertRedirects(response, "/Login")
         
     
