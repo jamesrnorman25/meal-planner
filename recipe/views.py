@@ -20,7 +20,7 @@ def new_recipe(request):
     if not request.user.is_authenticated:
         return redirect("/Login")
     if request.method == "POST":
-        logger.info(request.POST)
+        logger.info(f"Post request submitted to /recipes/new with data \n{request.POST}")
         # Check recipe and save.
         form = RecipeForm(data=request.POST)
         formset = RecipeIngredientFormSet(data=request.POST)
