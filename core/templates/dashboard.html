@@ -33,6 +33,15 @@
                 </div>
                 <div class="col-lg-6"><a class="btn btn-info" id="id_link_new_recipe" href="/recipes/new">New recipe</a></div>
             </div>
+            {% for recipe in recipes %}
+            <div class="card" style="width: 18rem">
+                <div class="card-body text-center">
+                    <h2 class="card-title" id="id_recipe_header" name="header-{{ recipe.name | slugify }}">{{ recipe.name }}</h2>
+                    <a class="btn btn-primary" href="/recipes/{{recipe.slug}}">View</a>
+                    <a class="btn btn-primary" href="/recipes/{{recipe.slug}}/edit" name="link-edit-{{recipe.name|slugify}}">Edit</a>
+                </div>
+            </div>
+            {% endfor %}
 
         </main>
 {% endblock content %}

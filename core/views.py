@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from mealplan.models import Mealplan
+from recipe.models import Recipe
 
 import logging
 
@@ -27,10 +28,11 @@ def homepage(request):
 def dashboard(request):
     if request.user.is_authenticated:
         mealplans = Mealplan.objects.filter(user=request.user)
+        recipes = Recipe.objects.filter(user=request.user)
         logger.debug(Mealplan.objects.all())
         logger.debug([mealplan for mealplan in mealplans])
         # mealplan_ids = {mealplan.name: "_".join(mealplan.name.split(" ")) for mealplan in mealplans}
-        return render(request, "dashboard.html", context={"mealplans": mealplans})
+        return render(request, "dashboard.html", context={"mealplans": mealplans, "recipes": recipes})
     else:
         return redirect("/Login")
 
