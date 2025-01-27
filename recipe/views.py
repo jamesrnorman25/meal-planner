@@ -1,6 +1,6 @@
 import logging
 
-from django.forms import formset_factory
+from django.forms import modelformset_factory, formset_factory
 from django.shortcuts import render, HttpResponse, redirect
 from recipe.forms import RecipeForm, RecipeIngredientForm
 from recipe.models import Recipe, RecipeIngredient
@@ -13,10 +13,32 @@ def existing_recipe(request, slug):
         return redirect("/Login")
     else:
         recipe = Recipe.objects.get(slug=slug)
-        return render(request, template_name="existing_recipe.html", context={"recipe": recipe})
+        ingredients = RecipeIngredient.objects.filter(recipe=recipe)
+        return render(request, template_name="existing_recipe.html", context={"recipe": recipe, "ingredients": ingredients})
+    
+def edit_recipe(request, slug):
+    if not request.user.is_authenticated:
+        return redirect("/Login")
+    else:
+        # RecipeIngredientFormSet = formset_factory(RecipeIngredientForm, min_num=1, extra=0, can_delete=True)
+        RecipeIngredientFormSet = modelformset_factory(RecipeIngredient, form=RecipeIngredientForm, extra=0, can_delete=True)
+        recipe = Recipe.objects.get(slug=slug)
+        if request.method == "POST":
+            form = RecipeForm(data=request.POST, instance=recipe)
+            formset = RecipeIngredientFormSet(data=request.POST, queryset=RecipeIngredient.objects.filter(recipe=recipe))
+            if form.is_valid() and formset.is_valid():
+                recipe = form.save()
+                formset.save()
+                return redirect("existing_recipe", slug=recipe.slug)
+        else:
+            form = RecipeForm(instance=recipe)
+            # ingredients = [RecipeIngredientForm(instance=recipe_ingredient) for recipe_ingredient in RecipeIngredient.objects.filter(recipe=recipe)]
+            formset = RecipeIngredientFormSet(queryset=RecipeIngredient.objects.filter(recipe=recipe))
+                
+        return render(request, template_name="edit_recipe.html", context={"form": form, "formset": formset})
 
 def new_recipe(request):
-    RecipeIngredientFormSet = formset_factory(RecipeIngredientForm, min_num=1, extra=0, can_delete=True)
+    RecipeIngredientFormSet = modelformset_factory(RecipeIngredient, form=RecipeIngredientForm)
     if not request.user.is_authenticated:
         return redirect("/Login")
     if request.method == "POST":

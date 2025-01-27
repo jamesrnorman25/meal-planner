@@ -96,4 +96,29 @@ class ViewRecipeGetTest(TestCase):
         response = self.client.get(f"/recipes/{self.slug}")
         self.assertRedirects(response, "/Login")
         
-    
+
+class EditRecipeGetTest(TestCase):
+
+    def setUp(self) -> None:
+        self.username="test_user"
+        self.password="test_password"
+        self.user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        self.bread = Ingredient.objects.create(name="Bread")
+        self.bread.save()
+        self.butter = Ingredient.objects.create(name="Butter")
+        self.butter.save()
+        self.recipe = Recipe(name="Bread and butter", method="Put the butter on the bread.", user=self.user)
+        self.recipe.save()
+        self.recipe_ingredient_1 = RecipeIngredient.objects.create(ingredient=self.bread, recipe=self.recipe, quantity=1)
+        self.recipe_ingredient_2 = RecipeIngredient.objects.create(ingredient=self.butter, recipe=self.recipe, quantity=10)
+        self.recipe_ingredient_1.save()
+        self.recipe_ingredient_2.save()
+        self.slug = self.recipe.slug
+        self.client.force_login(self.user)
+
+    def tearDown(self):
+        self.client.logout()
+
+    def test_correct_template_used(self) -> None:
+        response = self.client.get(f"/recipes/{self.slug}/edit")
+        self.assertTemplateUsed(response, "edit_recipe.html")

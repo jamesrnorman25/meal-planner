@@ -8,11 +8,13 @@
 <header><h1>{{recipe.name}}</h1></header>
 
 <main>
-    {% for ingredient in recipe.ingredients.all %}
-    <p>{{ingredient.name}}: {{ingredient.quantity}}</p>
+    {% for ingredient in ingredients %}
+    <p>{{ingredient.ingredient.name}}: {{ingredient.quantity | slugify}}</p>
     {% endfor %}
     <h2>Method</h2>
     <p>{{recipe.method}}</p>
+
+    <a class="btn btn-info" href="{% url 'edit_recipe' recipe.slug %}">Edit</a>
 </main>
 
 {% endblock content %}
