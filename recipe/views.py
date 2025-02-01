@@ -5,6 +5,8 @@ from django.shortcuts import render, HttpResponse, redirect
 from recipe.forms import RecipeForm, RecipeIngredientForm
 from recipe.models import Recipe, RecipeIngredient
 from django.contrib.auth.models import User
+from django.views.generic import DeleteView
+from django.urls import reverse_lazy
 
 logger = logging.getLogger(__name__)
 
@@ -81,3 +83,18 @@ def new_recipe(request):
     
 
     return render(request, "new_recipe.html", context={"form": form, "formset": formset})
+
+class DeleteRecipeView(DeleteView):
+    model = Recipe
+    template_name = "delete_recipe.html"
+    success_url = reverse_lazy("dashboard")
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("/Login")
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("/Login")
+        return super().post(request, *args, **kwargs)

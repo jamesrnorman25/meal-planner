@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %} Delete Recipe {% endblock %}
+
+
+{% block content %}
+
+<header>
+    <h1 id="id_header">New Recipe</h1>
+</header>
+
+<main>
+    <form method="post">{% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        {{ form }}
+        <button class="btn btn-info" id="id_confirm" type="submit">Confirm</button>
+    </form>
+</main>
+{% endblock %}
