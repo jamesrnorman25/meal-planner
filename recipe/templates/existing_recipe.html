@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+{{recipe.name}}
+{% endblock title %}
+
+
+{% block content %}
+<header><h1>{{recipe.name}}</h1></header>
+
+<main>
+    {% for ingredient in ingredients %}
+    <p>{{ingredient.quantity | slugify}} {{ingredient.ingredient.unit}} {{ingredient.ingredient.name}}</p>
+    {% endfor %}
+    <h2>Method</h2>
+    <p>{{recipe.method}}</p>
+
+    <a class="btn btn-info" href="{% url 'edit_recipe' recipe.slug %}">Edit</a>
+</main>
+
+{% endblock content %}

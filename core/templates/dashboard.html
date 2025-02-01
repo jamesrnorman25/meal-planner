@@ -23,8 +23,27 @@
                     <h2 class="card-title" id="id_mealplan_header" name="header-{{ mealplan.name | slugify }}">{{ mealplan.name }}</h2>
                     <a class="btn btn-primary" href="/mealplans/{{mealplan.slug}}">View</a>
                     <a class="btn btn-primary" href="/mealplans/{{mealplan.slug}}/edit" name="link-edit-{{mealplan.name|slugify}}">Edit</a>
+                    <a class="btn btn-primary" href="/mealplans/{{mealplan.slug}}/delete" name="link-delete-{{mealplan.name|slugify}}">Delete</a>
                 </div>
             </div>
             {% endfor %}
+
+            <div class="row justify-content-space-between">
+                <div class="col-lg-6">
+                    <h2 id="id_header_recipes">Recipes</h2>
+                </div>
+                <div class="col-lg-6"><a class="btn btn-info" id="id_link_new_recipe" href="/recipes/new">New recipe</a></div>
+            </div>
+            {% for recipe in recipes %}
+            <div class="card" style="width: 18rem">
+                <div class="card-body text-center">
+                    <h2 class="card-title" id="id_recipe_header" name="header-{{ recipe.name | slugify }}">{{ recipe.name }}</h2>
+                    <a class="btn btn-primary" href="/recipes/{{recipe.slug}}">View</a>
+                    <a class="btn btn-primary" href="/recipes/{{recipe.slug}}/edit" name="link-edit-{{recipe.name|slugify}}">Edit</a>
+                    <a class="btn btn-primary" href="/recipes/{{recipe.slug}}/delete" name="link-delete-{{recipe.name|slugify}}">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+
         </main>
 {% endblock content %}

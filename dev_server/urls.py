@@ -17,13 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from core import views as core_views
 from mealplan import urls as mealplan_urls
+from recipe import urls as recipe_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', core_views.homepage),
     path('Create-Account', core_views.create_account),
-    path('Dashboard', core_views.dashboard),
+    path('Dashboard', core_views.dashboard, name="dashboard"),
     path('Login', core_views.login_view),
     path('Logout', core_views.logout_view),
     path('mealplans/', include(mealplan_urls)),
+    path('recipes/', include(recipe_urls)),
 ]
