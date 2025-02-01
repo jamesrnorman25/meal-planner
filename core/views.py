@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from mealplan.models import Mealplan
 from recipe.models import Recipe
 
@@ -25,33 +25,11 @@ def homepage(request):
     logger.info("Retrieving homepage")
     return render(request, "home.html")
 
+@login_required
 def dashboard(request):
-    if request.user.is_authenticated:
-        mealplans = Mealplan.objects.filter(user=request.user)
-        recipes = Recipe.objects.filter(user=request.user)
-        logger.debug(Mealplan.objects.all())
-        logger.debug([mealplan for mealplan in mealplans])
-        # mealplan_ids = {mealplan.name: "_".join(mealplan.name.split(" ")) for mealplan in mealplans}
-        return render(request, "dashboard.html", context={"mealplans": mealplans, "recipes": recipes})
-    else:
-        return redirect("/Login")
-
-def login_view(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request=request, data=request.POST)
-        if form.is_valid():
-            logger.info("Form valid!")
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                # print("User logged in successfully")
-                login(request, user)
-                return redirect("/Dashboard")
-    else:
-        form = AuthenticationForm
-    return render(request, "login.html", context={"form": form})
-    
-def logout_view(request):
-    logout(request)
-    return redirect("/")
+    mealplans = Mealplan.objects.filter(user=request.user)
+    recipes = Recipe.objects.filter(user=request.user)
+    logger.debug(Mealplan.objects.all())
+    logger.debug([mealplan for mealplan in mealplans])
+    # mealplan_ids = {mealplan.name: "_".join(mealplan.name.split(" ")) for mealplan in mealplans}
+    return render(request, "dashboard.html", context={"mealplans": mealplans, "recipes": recipes})
