@@ -20,6 +20,11 @@ class RecipeModelTest(TestCase):
     def test_default_method(self) -> None:
         self.assertEqual(self.recipe.method, "")
 
+    def test_can_delete_model(self) -> None:
+        self.recipe.delete()
+        recipes = Recipe.objects.all()
+        self.assertNotIn(self.recipe, recipes)
+
     # def test_default_ingredients(self) -> None:
     #     self.assertEqual(self.recipe.ingredients.all().count(), 0)
 

@@ -41,6 +41,11 @@ class Recipe(models.Model):
             self.slug = slugify(f"{self.name} {time()}")
         super().save()
 
+    def delete(self):
+        for recipe_ingredient in RecipeIngredient.objects.filter(recipe=self):
+            recipe_ingredient.delete()
+        super().delete()
+
 
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
