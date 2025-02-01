@@ -28,7 +28,13 @@ def edit_recipe(request, slug):
             formset = RecipeIngredientFormSet(data=request.POST, queryset=RecipeIngredient.objects.filter(recipe=recipe))
             if form.is_valid() and formset.is_valid():
                 recipe = form.save()
-                formset.save()
+                for form in formset:
+                    ingredient = form.cleaned_data.get("ingredient")
+                    existing_recipe_ingredient = RecipeIngredient.objects.get(ingredient=ingredient, recipe=recipe)
+                    if existing_recipe:
+                        new_form = RecipeIngredientForm(data=form.cleaned_data, instance=existing_recipe_ingredient)
+                        new_form.save()
+                # formset.save_m2m()
                 return redirect("existing_recipe", slug=recipe.slug)
         else:
             form = RecipeForm(instance=recipe)

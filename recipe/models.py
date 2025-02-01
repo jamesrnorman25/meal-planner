@@ -20,7 +20,8 @@ class Recipe(models.Model):
     slug = models.SlugField()
 
     def save(self):
-        self.slug = slugify(f"{self.name} {time()}")
+        if not self.slug or slugify(self.name) not in self.slug:
+            self.slug = slugify(f"{self.name} {time()}")
         super().save()
 
 

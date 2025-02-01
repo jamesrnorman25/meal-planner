@@ -69,7 +69,7 @@ class NewRecipePostTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "new_recipe.html")
 
-class ViewRecipeGetTest(TestCase):
+class ViewRecipeTest(TestCase):
     username="test_user"
     password="test_password"
     ingredients = [("Bread", 1), ("Butter", 10)]
@@ -97,7 +97,7 @@ class ViewRecipeGetTest(TestCase):
         self.assertRedirects(response, "/Login")
         
 
-class EditRecipeGetTest(TestCase):
+class EditRecipeTest(TestCase):
 
     def setUp(self) -> None:
         self.username="test_user"
@@ -113,11 +113,31 @@ class EditRecipeGetTest(TestCase):
         self.recipe_ingredient_2 = RecipeIngredient.objects.create(ingredient=self.butter, recipe=self.recipe, quantity=10)
         self.recipe_ingredient_1.save()
         self.recipe_ingredient_2.save()
+        self.valid_data = {'name': ['Bread and butter'], 
+                  'form-TOTAL_FORMS': ['2'], 
+                  'form-INITIAL_FORMS': ['0'], 
+                  'form-MIN_NUM_FORMS': ['1'], 
+                  'form-MAX_NUM_FORMS': ['1000'], 
+                  'form-0-ingredient': ['1'], 
+                  'form-0-quantity': ['1'], 
+                  'form-1-ingredient': ['2'], 
+                  'form-1-quantity': ['10'],
+                  'method': ['1. Slice the bread.\r\n        2. Spread the butter on the bread.']}
         self.slug = self.recipe.slug
         self.client.force_login(self.user)
 
     def tearDown(self):
         self.client.logout()
+
+    def test_post_saves_correctly(self) -> None:
+        response = self.client.post(f"/recipes/{self.recipe.slug}/edit", data=self.valid_data)
+        self.assertRedirects(response, f"/recipes/{self.slug}")
+        self.assertEqual(Recipe.objects.get(slug=self.slug).method, self.valid_data["method"][0])
+    
+    def test_redirects_if_not_authenticated(self) -> None:
+        self.client.logout()
+        response = self.client.get(f"/recipes/{self.slug}/edit")
+        self.assertRedirects(response, "/Login")
 
     def test_correct_template_used(self) -> None:
         response = self.client.get(f"/recipes/{self.slug}/edit")
