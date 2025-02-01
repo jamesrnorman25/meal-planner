@@ -21,9 +21,14 @@ class RecipeModelTest(TestCase):
         self.assertEqual(self.recipe.method, "")
 
     def test_can_delete_model(self) -> None:
+        ingredient = Ingredient(name="Test Ingredient")
+        ingredient.save()
+        recipe_ingredient = RecipeIngredient(recipe=self.recipe, ingredient=ingredient, quantity=5)
+        recipe_ingredient.save()
         self.recipe.delete()
         recipes = Recipe.objects.all()
         self.assertNotIn(self.recipe, recipes)
+        self.assertEqual(RecipeIngredient.objects.filter(recipe=self.recipe).count(), 0)
 
     # def test_default_ingredients(self) -> None:
     #     self.assertEqual(self.recipe.ingredients.all().count(), 0)
