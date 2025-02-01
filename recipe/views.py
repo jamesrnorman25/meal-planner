@@ -15,7 +15,8 @@ def existing_recipe(request, slug):
         recipe = Recipe.objects.get(slug=slug)
         ingredients = RecipeIngredient.objects.filter(recipe=recipe)
         return render(request, template_name="existing_recipe.html", context={"recipe": recipe, "ingredients": ingredients})
-    
+
+
 def edit_recipe(request, slug):
     if not request.user.is_authenticated:
         return redirect("/Login")

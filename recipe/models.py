@@ -7,9 +7,23 @@ from time import time
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
+    unit_choices = [
+        ("g", "g"),
+        ("kg", "kg"),
+        ("ml", "ml"),
+        ("l", "l"),
+        ("tbsp", "tbsp"),
+        ("tsp", "tsp"),
+        ("cup", "cup"),
+        ("none", "No unit"),
+        ("slices", "slices"),
+    ]
+
+    unit = models.CharField(max_length=100, choices=unit_choices, default="none")
+
 
     def __str__(self):
-        return self.name
+        return self.name if self.unit == "none" else f"{self.name} ({self.unit})"
 
 
 class Recipe(models.Model):
@@ -18,6 +32,9 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField()
+
+    def __str__(self):
+        return self.name
 
     def save(self):
         if not self.slug or slugify(self.name) not in self.slug:

@@ -69,6 +69,7 @@ class NewRecipePostTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "new_recipe.html")
 
+
 class ViewRecipeTest(TestCase):
     username="test_user"
     password="test_password"
@@ -133,6 +134,8 @@ class EditRecipeTest(TestCase):
         response = self.client.post(f"/recipes/{self.recipe.slug}/edit", data=self.valid_data)
         self.assertRedirects(response, f"/recipes/{self.slug}")
         self.assertEqual(Recipe.objects.get(slug=self.slug).method, self.valid_data["method"][0])
+        print(RecipeIngredient.objects.filter(recipe=self.recipe))
+        self.assertGreater(len(RecipeIngredient.objects.filter(recipe=self.recipe)), 0)
     
     def test_redirects_if_not_authenticated(self) -> None:
         self.client.logout()

@@ -5,7 +5,7 @@ from recipe.models import Ingredient, Recipe, RecipeIngredient
 # Register your models here.
 class IngredientAdmin(admin.ModelAdmin):
     list_display=("name",)
-    fields=["name",]
+    fields=["name", "unit"]
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display=("name",)

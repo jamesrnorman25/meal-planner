@@ -9,7 +9,7 @@
 
 <main>
     {% for ingredient in ingredients %}
-    <p>{{ingredient.ingredient.name}}: {{ingredient.quantity | slugify}}</p>
+    <p>{{ingredient.quantity | slugify}} {{ingredient.ingredient.unit}} {{ingredient.ingredient.name}}</p>
     {% endfor %}
     <h2>Method</h2>
     <p>{{recipe.method}}</p>
