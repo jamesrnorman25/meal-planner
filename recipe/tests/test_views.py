@@ -1,5 +1,6 @@
 from django.test import RequestFactory, TestCase
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from recipe.models import Ingredient, Recipe, RecipeIngredient
 
@@ -26,7 +27,7 @@ class NewRecipeGetTest(TestCase):
     def test_redirects_if_not_authenticated(self) -> None:
         self.client.logout()
         response = self.client.get("/recipes/new")
-        self.assertRedirects(response, "/Login")
+        self.assertRedirects(response, reverse("login") + "?next=/recipes/new")
 
 class NewRecipePostTest(TestCase):
     username="test_user"
@@ -95,7 +96,7 @@ class ViewRecipeTest(TestCase):
 
     def test_redirects_if_not_authenticated(self) -> None:
         response = self.client.get(f"/recipes/{self.slug}")
-        self.assertRedirects(response, "/Login")
+        self.assertRedirects(response, reverse("login") + f"?next=/recipes/{self.slug}")
         
 
 class EditRecipeTest(TestCase):
@@ -140,7 +141,7 @@ class EditRecipeTest(TestCase):
     def test_redirects_if_not_authenticated(self) -> None:
         self.client.logout()
         response = self.client.get(f"/recipes/{self.slug}/edit")
-        self.assertRedirects(response, "/Login")
+        self.assertRedirects(response, reverse("login") + f"?next=/recipes/{self.slug}/edit")
 
     def test_correct_template_used(self) -> None:
         response = self.client.get(f"/recipes/{self.slug}/edit")
