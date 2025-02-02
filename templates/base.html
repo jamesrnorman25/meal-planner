@@ -18,7 +18,7 @@
                     <li class="nav-item"><a class="nav-link" id="id_link_home" href="/">Home</a></li>
                     {% if user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link" id="id_link_dashboard" href="/Dashboard">My Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" id="id_link_logout" href="/Logout">Log out</a></li>
+                    <li class="nav-item"><form class="navbar-form" role="logout" action={% url "logout" %} method="post">{% csrf_token %} <input class="nav-link" type="submit" id="id_link_logout" value="Log Out"></form></li>
                     {% else %}
                     <li class="nav-item"><a class="nav-link" id="id_link_login" href="/Login">Login</a></li>
                     {% endif %}
