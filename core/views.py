@@ -21,16 +21,6 @@ class CreateAccountView(FormView):
         login(self.request, user)
         return super().form_valid(form)
 
-# def create_account(request):
-#     if request.method == "POST":
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request, user)
-#             return redirect("/Dashboard")
-#     else:
-#         form = UserCreationForm
-#     return render(request, "create_account.html", context={"form": form})
 
 def homepage(request):
     logger.info("Retrieving homepage")
