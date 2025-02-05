@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from recipe.models import Recipe, Ingredient, RecipeIngredient
-from unittest import skip
+from unittest import skip, mock
 
 import logging
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ class RecipeModelTest(TestCase):
         self.recipe.delete()
         recipes = Recipe.objects.all()
         self.assertNotIn(self.recipe, recipes)
-        self.assertEqual(RecipeIngredient.objects.filter(recipe=self.recipe).count(), 0)
+        self.assertEqual(RecipeIngredient.objects.all().count(), 0)
 
     # def test_default_ingredients(self) -> None:
     #     self.assertEqual(self.recipe.ingredients.all().count(), 0)

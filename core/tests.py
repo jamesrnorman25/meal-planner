@@ -6,6 +6,7 @@ from django.test import TestCase
 
 from django.contrib.auth import get_user
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 import logging
@@ -74,7 +75,7 @@ class DashboardLoggedOutGetTest(TestCase):
         self.response = self.client.get("/Dashboard")
 
     def test_redirects_to_login(self) -> None:
-        self.assertRedirects(self.response, "/Login")
+        self.assertRedirects(self.response, reverse("login") + "?next=/Dashboard")
 
 
 class LoginGetTest(TestCase):
@@ -126,7 +127,7 @@ class LogoutTest(TestCase):
         user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
         user.save()
         self.client.force_login(user=user)
-        self.response = self.client.get("/Logout")
+        self.response = self.client.post("/Logout")
 
     def test_logs_user_out(self) -> None:
         user = get_user(self.client)

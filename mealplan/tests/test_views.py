@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.test import TestCase
 from mealplan.models import Mealplan
+from django.urls import reverse
 
 class RedirectionTest(TestCase):
     username = "test"
@@ -73,7 +74,7 @@ class LoggedOutNewMealplanTest(TestCase):
         self.response = self.client.get("/mealplans/new")
     
     def test_redirects_to_login(self) -> None:
-        self.assertRedirects(self.response, "/Login")
+        self.assertRedirects(self.response, reverse("login") + "?next=/mealplans/new")
 
 class ExistingMealplanDisplayTest(TestCase):
     def setUp(self) -> None:
@@ -93,7 +94,12 @@ class ExistingMealplanDisplayTest(TestCase):
         self.assertTemplateUsed(self.response, "existing.html")
 
 class EditMealplanDisplayTest(TestCase):
+    username = "test"
+    password = "password123"
     def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user=user)
         self.mealplan = Mealplan()
         self.mealplan.name = "Test Mealplan"
         self.mealplan.monday = "Monday's meal"
@@ -112,8 +118,19 @@ class EditMealplanDisplayTest(TestCase):
     def test_uses_correct_template(self) -> None:
         self.assertTemplateUsed(self.response, "edit.html")
 
+    def test_redirects_if_not_authenticated(self) -> None:
+        self.client.logout()
+        response = self.client.get(f"/mealplans/{self.mealplan.slug}/edit")
+        self.assertRedirects(response, reverse("login") + f"?next=/mealplans/{self.mealplan.slug}/edit")
+
+
 class EditMealplanPostTest(TestCase):
+    username = "test"
+    password = "password123"
     def setUp(self) -> None:
+        user = User.objects.create_user(username=self.username, password=self.password, is_active=1)
+        user.save()
+        self.client.force_login(user=user)
         self.mealplan = Mealplan()
         self.mealplan.name = "Test Mealplan"
         self.mealplan.monday = "Monday's meal"
