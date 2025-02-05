@@ -4,10 +4,12 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from .utils import wait_for
 from recipe.models import Ingredient, Recipe, RecipeIngredient
 from django.utils.text import slugify
-
+from time import sleep
 MAX_WAIT = 3  # Max wait for browser load.
 WAIT_STEP = 0.5  # Wait step for browser load.
 
@@ -27,6 +29,7 @@ class NewRecipeTest(StaticLiveServerTestCase):
         self.client.force_login(user=user)
         cookie = self.client.cookies["sessionid"]
         self.browser = webdriver.Firefox()
+        self.browser.maximize_window()
         self.browser.get(self.live_server_url)
         self.browser.add_cookie({"name": "sessionid", "value": cookie.value, "secure": False, "path": '/'})
         self.browser.refresh()
@@ -70,6 +73,7 @@ class NewRecipeTest(StaticLiveServerTestCase):
         2. Put tuna on one slice of bread.
         3. Put the other slice on top."""
         )
+        # WebDriverWait(self.browser, 10).until(EC.element_to_be_clickable((By.ID, "id_submit"))).click()
         submit_button = self.browser.find_element(By.ID, "id_submit")
         submit_button.click()
 
@@ -97,6 +101,7 @@ class EditRecipeTest(StaticLiveServerTestCase):
         self.client.force_login(user=user)
         cookie = self.client.cookies["sessionid"]
         self.browser = webdriver.Firefox()
+        self.browser.maximize_window()
         self.browser.get(self.live_server_url)
         self.browser.add_cookie({"name": "sessionid", "value": cookie.value, "secure": False, "path": '/'})
         self.browser.refresh()
