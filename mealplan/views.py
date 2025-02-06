@@ -1,10 +1,13 @@
+import logging
+
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views.generic import CreateView, DetailView, UpdateView
 from mealplan.forms import MealplanForm
 from mealplan.models import Mealplan
-
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -13,38 +16,38 @@ logger = logging.getLogger(__name__)
 def blank(request):
     return redirect("new_mealplan")
 
-def existing_mealplan(request, slug):
-    mealplan = Mealplan.objects.get(slug=slug)
-    return render(request, "existing.html", context={"mealplan": mealplan})
+class MealplanDetailView(DetailView):
+    model = Mealplan
+    template_name = "existing.html"
+    context_object_name = "mealplan"
 
-@login_required
-def new_mealplan(request):
-    user = User.objects.get(username=request.user.username)
-    if request.method == "POST":
-        form = MealplanForm(request.POST)
-        # print(form["user"])
-        if form.is_valid():
-            # form["user"] = user
-            mealplan = form.save()
-            mealplan.user = user
-            mealplan.save()
-            return redirect("existing_mealplan", slug=mealplan.slug)
-        else:
-            print("Form invalid")
-    else:
-        form = MealplanForm
-    return render(request, "new.html", context={"form": form})
+
+class MealplanCreateView(LoginRequiredMixin, CreateView):
+    model = Mealplan
+    form_class = MealplanForm
+    template_name = "new.html"
+
+    def form_valid(self, form):
+        user = User.objects.get(username=self.request.user.username)
+        mealplan = form.save()
+        mealplan.user = user
+        mealplan.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["mealplans"] = Mealplan.objects.filter(user=self.request.user)
+        return context
     
-@login_required
-def edit_mealplan(request, slug):
-    mealplan = Mealplan.objects.get(slug=slug)
-    if request.method == "POST":
-        form = MealplanForm(data=request.POST, instance=mealplan)
-        if form.is_valid():
-            print(form["monday"])
-            form.save()
-            print(mealplan.monday)
-            return redirect(f"/mealplans/{slug}")
-    else:
-        form = MealplanForm(instance=mealplan)
-        return render(request, "edit.html", context={"form": form})
+    def get_success_url(self):
+        return reverse("mealplan_detail", kwargs={"slug": self.object.slug})
+
+
+class MealplanUpdateView(LoginRequiredMixin, UpdateView):
+    model = Mealplan
+    form_class = MealplanForm
+    template_name = "edit.html"
+
+    def get_success_url(self):
+        return reverse("mealplan_detail", kwargs={"slug": self.object.slug})
+    

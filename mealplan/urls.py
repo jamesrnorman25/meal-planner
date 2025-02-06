@@ -3,7 +3,7 @@ import mealplan.views as views
 
 urlpatterns = [
     path('', views.blank, name="empty_mealplan"),
-    path('new', views.new_mealplan, name="new_mealplan"),
-    path('<slug:slug>', views.existing_mealplan, name="existing_mealplan"),
-    path('<slug:slug>/edit', views.edit_mealplan, name="edit_mealplan"),
+    path('new', views.MealplanCreateView.as_view(), name="new_mealplan"),
+    path('<slug:slug>', views.MealplanDetailView.as_view(), name="mealplan_detail"),
+    path('<slug:slug>/edit', views.MealplanUpdateView.as_view(), name="mealplan_update"),
 ]
